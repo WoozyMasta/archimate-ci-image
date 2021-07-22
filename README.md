@@ -11,7 +11,7 @@ For collaboration with models in the git repository, the [coArchi][] plugin
 is installed in the container.
 
 <p align="center" width="100%">
-  <img width="75%" src="https://raw.githubusercontent.com/WoozyMasta/archimate-ci/master/scheme.png" />
+  <img src="https://raw.githubusercontent.com/WoozyMasta/archimate-ci-image/master/scheme.png" />
 </p>
 
 For ease of use, the docker-entrypoint.sh script is run in the container,
