@@ -2,7 +2,7 @@
 
 [Archi][Archi repository] container image for use in continuous integration
 pipelines. With this container, you can implement automatic report generation
-and model unloading in your pipeline.
+and model export in your pipeline.
 
 The [Archi][] modelling toolkit is targeted toward all levels of Enterprise
 Architects and Modellers.
