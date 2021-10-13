@@ -5,9 +5,10 @@ ARG COARCHI_VERSION=0.8.0.202110121448
 ARG TZ=UTC
 ARG UID=1000
 
-RUN set -xeu&& \
-    # Add grou and user archi
-    groupadd --gid "$UID" archi && \
+SHELL ["/bin/bash", "-o", "pipefail", "-x", "-e", "-u", "-c"]
+
+# hadolint ignore=DL3008
+RUN groupadd --gid "$UID" archi && \
     useradd --uid "$UID" --gid archi --shell /bin/bash \
       --home-dir /archi --create-home archi && \
     # Set timezone
@@ -15,7 +16,8 @@ RUN set -xeu&& \
     echo "$TZ" > /etc/timezone && \
     # Install dependecies
     apt-get update && \
-    apt-get install -y \
+    apt-get install -y --no-install-recommends \
+      ca-certificates \
       libgtk2.0-cil \
       libswt-gtk-4-jni \
       dbus-x11 \
@@ -24,6 +26,8 @@ RUN set -xeu&& \
       git \
       unzip && \
     apt-get clean && \
+    update-ca-certificates && \
+    rm -rf /var/lib/apt/lists/* && \
     # Download & extract Archimate tool
     curl "https://www.archimatetool.com/downloads/archi/" \
       --data-raw "d1=$ARCHI_VERSION/Archi-Linux64-$ARCHI_VERSION.tgz" \

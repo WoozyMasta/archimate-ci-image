@@ -86,6 +86,12 @@ docker build \
 
 ## Solving Potential Problems
 
+If you are trying to build an image using podman or buildah and get a warning
+**"SHELL is not supported for OCI image format"**, use the `--format docker`
+flag
+
+---
+
 If you are using a private git repository hosted behind a VPN, the tunnel
 interface or name resolution might not be available in the container, use the
 host network in the container and force the DNS record forward.
