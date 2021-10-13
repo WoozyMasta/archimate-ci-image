@@ -28,7 +28,7 @@ mkdir -p ./archi
 docker run --rm \
   -v $(pwd)/archi:/archi \
   -e GIT_REPOSITORY=git@github.com:archimatetool/example.git
-  woozymasta/archimate-ci:4.8.1
+  woozymasta/archimate-ci:4.9.0
 ```
 
 An example with handling a local repository:
@@ -39,7 +39,7 @@ mkdir -p ./report
 docker run --rm \
   -v /path/to/model:/archi/project \
   -v $(pwd)/report:/archi/report \
-  woozymasta/archimate-ci:4.8.1
+  woozymasta/archimate-ci:4.9.0
 ```
 
 Working with the CLI directly:
@@ -47,7 +47,7 @@ Working with the CLI directly:
 ```bash
 docker run --rm -ti \
   -v $(pwd)/archi:/archi \
-  woozymasta/archimate-ci:4.8.1 --help
+  woozymasta/archimate-ci:4.9.0 --help
 ```
 
 ## Configuration
@@ -78,9 +78,9 @@ Options for managing model export:
 
 ```bash
 docker build \
-  --tag archimate-ci:4.8.1 \
-  --build-arg="ARCHI_VERSION=4.8.1" \
-  --build-arg="COARCHI_VERSION=0.7.1.202102021056" \
+  --tag archimate-ci:4.9.0 \
+  --build-arg="ARCHI_VERSION=4.9.0" \
+  --build-arg="COARCHI_VERSION=0.8.0.202110121448" \
   ./
 ```
 
@@ -96,7 +96,7 @@ docker run --rm \
   -e GIT_REPOSITORY=git@github.com:archimatetool/example.git
   --network=host
   --add-host="$(getent hosts gitlab.internal.tld | awk '{print $2 ":" $1}')"
-  woozymasta/archimate-ci:4.8.1
+  woozymasta/archimate-ci:4.9.0
 ```
 
 <!-- links -->
