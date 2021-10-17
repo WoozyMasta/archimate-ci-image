@@ -7,7 +7,8 @@ ARG UID=1000
 
 SHELL ["/bin/bash", "-o", "pipefail", "-x", "-e", "-u", "-c"]
 
-# hadolint ignore=DL3008
+# DL3015 ignored for suppress org.freedesktop.DBus.Error.ServiceUnknown
+# hadolint ignore=DL3008,DL3015
 RUN groupadd --gid "$UID" archi && \
     useradd --uid "$UID" --gid archi --shell /bin/bash \
       --home-dir /archi --create-home archi && \
@@ -16,7 +17,7 @@ RUN groupadd --gid "$UID" archi && \
     echo "$TZ" > /etc/timezone && \
     # Install dependecies
     apt-get update && \
-    apt-get install -y --no-install-recommends \
+    apt-get install -y \
       ca-certificates \
       libgtk2.0-cil \
       libswt-gtk-4-jni \
@@ -35,9 +36,10 @@ RUN groupadd --gid "$UID" archi && \
       tar zxf - -C /opt/ && \
     chmod +x /opt/Archi/Archi && \
     # Install Collaboration plugin
+    mkdir -p /archi/.archi4/dropins/ && \
     curl "https://www.archimatetool.com/downloads/coarchi/coArchi_$COARCHI_VERSION.archiplugin" \
        --output modelrepository.archiplugin && \
-    unzip modelrepository.archiplugin -d /opt/Archi/plugins/ && \
+    unzip modelrepository.archiplugin -d /archi/.archi4/dropins/ && \
     rm modelrepository.archiplugin && \
     chown -R "$UID:0" /archi && \
     chmod -R g+rw /archi
