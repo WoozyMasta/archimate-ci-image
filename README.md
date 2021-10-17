@@ -10,6 +10,7 @@ Architects and Modellers.
 For collaboration with models in the git repository, the [coArchi][] plugin
 is installed in the container.
 
+<!-- markdownlint-disable -->
 <p align="center" width="100%">
   <img src="https://raw.githubusercontent.com/WoozyMasta/archimate-ci-image/master/scheme.png" />
 </p>
@@ -18,16 +19,23 @@ For ease of use, the docker-entrypoint.sh script is run in the container,
 which processes the environment variables, and the native git client is used
 for cloning.
 
+You can check the operation of the container using the [example][]
+
 ## Run Container
 
-Example with cloning a remote repository:
+Example with cloning a remote repository and render HTML report:
 
 ```bash
-mkdir -p ./archi
+mkdir -p ./report
+chmod o+rw ./report
 
 docker run --rm \
-  -v $(pwd)/archi:/archi \
-  -e GIT_REPOSITORY=git@github.com:archimatetool/example.git
+  -v $(pwd)/report:/archi/report \
+  -e GIT_REPOSITORY=https://github.com/WoozyMasta/archimate-ci-image-example.git \
+  -e HTML_REPORT_ENABLED=true \
+  -e JASPER_REPORT_ENABLED=false \
+  -e CSV_REPORT_ENABLED=false \
+  -e EXPORT_MODEL_ENABLED=false \
   woozymasta/archimate-ci:4.9.0
 ```
 
@@ -35,6 +43,7 @@ An example with handling a local repository:
 
 ```bash
 mkdir -p ./report
+chmod o+rw ./report
 
 docker run --rm \
   -v /path/to/model:/archi/project \
@@ -45,9 +54,7 @@ docker run --rm \
 Working with the CLI directly:
 
 ```bash
-docker run --rm -ti \
-  -v $(pwd)/archi:/archi \
-  woozymasta/archimate-ci:4.9.0 --help
+docker run --rm -ti woozymasta/archimate-ci:4.9.0 --help
 ```
 
 ## Configuration
@@ -99,7 +106,7 @@ host network in the container and force the DNS record forward.
 ```bash
 docker run --rm \
   -v $(pwd)/archi:/archi \
-  -e GIT_REPOSITORY=git@github.com:archimatetool/example.git
+  -e GIT_REPOSITORY=https://github.com/WoozyMasta/archimate-ci-image-example.git
   --network=host
   --add-host="$(getent hosts gitlab.internal.tld | awk '{print $2 ":" $1}')"
   woozymasta/archimate-ci:4.9.0
@@ -110,3 +117,4 @@ docker run --rm \
 [Archi]: https://www.archimatetool.com "The Open Source modelling toolkit for creating ArchiMate models and sketches."
 [Archi repository]: https://github.com/archimatetool/archi "Archi: ArchiMate Modelling Tool "
 [coArchi]: https://github.com/archimatetool/archi-modelrepository-plugin "coArchi – Model Collaboration for Archi"
+[example]: https://github.com/WoozyMasta/archimate-ci-image-example.git "Example Archi model for archimate-ci-image"
