@@ -21,6 +21,14 @@ for cloning.
 
 You can check the operation of the container using the [example][]
 
+## Container image
+
+You can pull image from registries:
+
+* `ghcr.io/woozymasta/archimate-ci:4.9.0`
+* `quay.io/woozymasta/archimate-ci:4.9.0`
+* `docker.io/woozymasta/archimate-ci:4.9.0`
+
 ## Run Container
 
 Example with cloning a remote repository and render HTML report:
@@ -36,7 +44,7 @@ docker run --rm \
   -e JASPER_REPORT_ENABLED=false \
   -e CSV_REPORT_ENABLED=false \
   -e EXPORT_MODEL_ENABLED=false \
-  woozymasta/archimate-ci:4.9.0
+  ghcr.io/woozymasta/archimate-ci:4.9.0
 ```
 
 An example with handling a local repository:
@@ -48,13 +56,13 @@ chmod o+rw ./report
 docker run --rm \
   -v /path/to/model:/archi/project \
   -v $(pwd)/report:/archi/report \
-  woozymasta/archimate-ci:4.9.0
+  ghcr.io/woozymasta/archimate-ci:4.9.0
 ```
 
 Working with the CLI directly:
 
 ```bash
-docker run --rm -ti woozymasta/archimate-ci:4.9.0 --help
+docker run --rm -ti ghcr.io/woozymasta/archimate-ci:4.9.0 --help
 ```
 
 ## Configuration
@@ -109,7 +117,7 @@ docker run --rm \
   -e GIT_REPOSITORY=https://github.com/WoozyMasta/archimate-ci-image-example.git
   --network=host
   --add-host="$(getent hosts gitlab.internal.tld | awk '{print $2 ":" $1}')"
-  woozymasta/archimate-ci:4.9.0
+  ghcr.io/woozymasta/archimate-ci:4.9.0
 ```
 
 <!-- links -->
