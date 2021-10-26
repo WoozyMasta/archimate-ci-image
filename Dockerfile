@@ -49,6 +49,5 @@ COPY docker-entrypoint.sh /opt/Archi/
 
 USER archi
 WORKDIR /archi
-ENV GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 
 ENTRYPOINT [ "/opt/Archi/docker-entrypoint.sh" ]
