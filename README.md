@@ -15,7 +15,7 @@ is installed in the container.
   <img src="https://raw.githubusercontent.com/WoozyMasta/archimate-ci-image/master/scheme.png" />
 </p>
 
-For ease of use, the docker-entrypoint.sh script is run in the container,
+For ease of use, the entrypoint.sh script is run in the container,
 which processes the environment variables, and the native git client is used
 for cloning.
 

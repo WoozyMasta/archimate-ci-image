@@ -45,9 +45,9 @@ RUN groupadd --gid "$UID" archi && \
     chown -R "$UID:0" /archi && \
     chmod -R g+rw /archi
 
-COPY docker-entrypoint.sh /opt/Archi/
+COPY entrypoint.sh /opt/Archi/
 
 USER archi
 WORKDIR /archi
 
-ENTRYPOINT [ "/opt/Archi/docker-entrypoint.sh" ]
+ENTRYPOINT [ "/opt/Archi/entrypoint.sh" ]
