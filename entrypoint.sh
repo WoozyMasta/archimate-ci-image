@@ -239,7 +239,8 @@ elif [ -n "${GIT_REPOSITORY:-}" ]; then
         _auth="oauth2:$GIT_TOKEN"
       fi
 
-      echo "Clone model from $GIT_REPOSITORY to $ARCHI_PROJECT_PATH dir use token"
+      echo \
+        "Clone model from $GIT_REPOSITORY to $ARCHI_PROJECT_PATH dir use token"
       git_clone "$_proto://$_auth@${GIT_REPOSITORY#*://}"
 
     # Use login and password
@@ -247,12 +248,14 @@ elif [ -n "${GIT_REPOSITORY:-}" ]; then
       # Encode symbols
       _auth="$(urlencode "$GIT_USERNAME"):$(urlencode "$GIT_PASSWORD")"
 
-      echo "Clone model from $GIT_REPOSITORY to $ARCHI_PROJECT_PATH dir use token"
+      echo \
+        "Clone model from $GIT_REPOSITORY to $ARCHI_PROJECT_PATH dir use token"
       git_clone "$_proto://$_auth@${GIT_REPOSITORY#*://}"
 
     # Use public repository access
     else
-      echo "Clone model from repository $GIT_REPOSITORY to $ARCHI_PROJECT_PATH dir"
+      echo \
+        "Clone model from repository $GIT_REPOSITORY to $ARCHI_PROJECT_PATH dir"
       git_clone "$GIT_REPOSITORY"
 
     fi
@@ -264,8 +267,10 @@ elif [ -n "${GIT_REPOSITORY:-}" ]; then
 
 # Exit. Model not exist
 else
-  fail "Plese set http or ssh url to git repositorty in \$GIT_REPOSITORY" \
-    "variable or mount model to \$ARCHI_PROJECT_PATH ($ARCHI_PROJECT_PATH) directory."
+  fail \
+    "Plese set http or ssh url to git repositorty in \$GIT_REPOSITORY" \
+    "variable or mount model to \$ARCHI_PROJECT_PATH ($ARCHI_PROJECT_PATH)" \
+    'directory.'
   exit 1
 fi
 

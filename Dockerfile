@@ -12,10 +12,10 @@ SHELL ["/bin/bash", "-o", "pipefail", "-x", "-e", "-u", "-c"]
 RUN groupadd --gid "$UID" archi && \
     useradd --uid "$UID" --gid archi --shell /bin/bash \
       --home-dir /archi --create-home archi && \
-    # Set timezone
+    # Set timezone \
     ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && \
     echo "$TZ" > /etc/timezone && \
-    # Install dependecies
+    # Install dependecies \
     apt-get update && \
     apt-get install -y \
       ca-certificates \
@@ -30,13 +30,13 @@ RUN groupadd --gid "$UID" archi && \
     apt-get clean && \
     update-ca-certificates && \
     rm -rf /var/lib/apt/lists/* && \
-    # Download & extract Archimate tool
+    # Download & extract Archimate tool \
     curl "https://www.archimatetool.com/downloads/archi/" \
       --data-raw "d1=$ARCHI_VERSION/Archi-Linux64-$ARCHI_VERSION.tgz" \
       --output - | \
       tar zxf - -C /opt/ && \
     chmod +x /opt/Archi/Archi && \
-    # Install Collaboration plugin
+    # Install Collaboration plugin \
     mkdir -p /archi/.archi4/dropins/ && \
     curl "https://www.archimatetool.com/downloads/coarchi/coArchi_$COARCHI_VERSION.archiplugin" \
        --output modelrepository.archiplugin && \
