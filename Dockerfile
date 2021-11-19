@@ -1,6 +1,6 @@
 FROM docker.io/ubuntu:20.04
 
-ARG ARCHI_VERSION=4.9.0
+ARG ARCHI_VERSION=4.9.1
 ARG COARCHI_VERSION=0.8.0.202110121448
 ARG TZ=UTC
 ARG UID=1000
@@ -31,14 +31,14 @@ RUN groupadd --gid "$UID" archi && \
     update-ca-certificates && \
     rm -rf /var/lib/apt/lists/* && \
     # Download & extract Archimate tool \
-    curl "https://www.archimatetool.com/downloads/archi/" \
-      --data-raw "d1=$ARCHI_VERSION/Archi-Linux64-$ARCHI_VERSION.tgz" \
+    curl 'https://www.archimatetool.com/downloads/archi/' --request POST \
+      --data-raw "dl=$ARCHI_VERSION/Archi-Linux64-$ARCHI_VERSION.tgz" \
       --output - | \
       tar zxf - -C /opt/ && \
     chmod +x /opt/Archi/Archi && \
     # Install Collaboration plugin \
     mkdir -p /archi/.archi4/dropins/ && \
-    curl "https://www.archimatetool.com/downloads/coarchi/coArchi_$COARCHI_VERSION.archiplugin" \
+    curl "https://www.archimatetool.com/downloads/coarchi1/coArchi_$COARCHI_VERSION.archiplugin" \
        --output modelrepository.archiplugin && \
     unzip modelrepository.archiplugin -d /archi/.archi4/dropins/ && \
     rm modelrepository.archiplugin && \
