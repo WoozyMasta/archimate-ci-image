@@ -41,7 +41,6 @@ RUN ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && \
 
 COPY entrypoint.sh /opt/Archi/
 
-USER archi
 WORKDIR /archi
 
 ENTRYPOINT [ "/opt/Archi/entrypoint.sh" ]
