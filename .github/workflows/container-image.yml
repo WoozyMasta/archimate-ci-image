@@ -18,18 +18,20 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       packages: write
-      contents: read
+      contents: write
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
 
       - name: Log in to Docker Hub Container registry
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Log in to Quay Container registry
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v1
         with:
           registry: quay.io
@@ -37,6 +39,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Log in to GitHub Container registry
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
@@ -51,11 +54,6 @@ jobs:
             ${{ github.repository }}
             quay.io/${{ github.repository }}
             ghcr.io/${{ github.repository }}
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
 
       - name: Build and push Docker images
         uses: docker/build-push-action@v2
@@ -76,7 +74,7 @@ jobs:
         id: create_release
         uses: ncipollo/release-action@v1
         with:
-          token: ${{ secrets.ACCESS_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           body: |
             Pull image:
 

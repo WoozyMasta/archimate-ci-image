@@ -3,7 +3,6 @@ FROM docker.io/ubuntu:20.04
 ARG ARCHI_VERSION=4.9.1
 ARG COARCHI_VERSION=0.8.0.202110121448
 ARG TZ=UTC
-ARG UID=1000
 
 SHELL ["/bin/bash", "-o", "pipefail", "-x", "-e", "-u", "-c"]
 
