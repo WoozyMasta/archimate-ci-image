@@ -9,7 +9,11 @@ SHELL ["/bin/bash", "-o", "pipefail", "-x", "-e", "-u", "-c"]
 
 # DL3015 ignored for suppress org.freedesktop.DBus.Error.ServiceUnknown
 # hadolint ignore=DL3008,DL3015
-RUN ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && \
+RUN groupadd --gid "$UID" archi && \
+    useradd --uid "$UID" --gid archi --shell /bin/bash \
+      --home-dir /archi --create-home archi && \
+    # Set timezone \
+    ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && \
     echo "$TZ" > /etc/timezone && \
     # Install dependecies \
     apt-get update && \
@@ -37,7 +41,9 @@ RUN ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && \
     curl "https://www.archimatetool.com/downloads/coarchi1/coArchi_$COARCHI_VERSION.archiplugin" \
        --output modelrepository.archiplugin && \
     unzip modelrepository.archiplugin -d /archi/.archi4/dropins/ && \
-    rm modelrepository.archiplugin
+    rm modelrepository.archiplugin && \
+    chown -R "$UID:0" /archi && \
+    chmod -R g+rw /archi
 
 COPY entrypoint.sh /opt/Archi/
 
