@@ -6,4 +6,4 @@ branding:
   color: blue
 runs:
   using: docker
-  image: docker://ghcr.io/woozymasta/archimate-ci-image:4.9.1-0.1
+  image: docker://ghcr.io/woozymasta/archimate-ci-image:4.9.1-0.3
