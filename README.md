@@ -15,7 +15,7 @@ is installed in the container.
   <img src="https://raw.githubusercontent.com/WoozyMasta/archimate-ci-image/master/scheme.png" />
 </p>
 
-For ease of use, the docker-entrypoint.sh script is run in the container,
+For ease of use, the entrypoint.sh script is run in the container,
 which processes the environment variables, and the native git client is used
 for cloning.
 
@@ -37,24 +37,25 @@ Example with cloning a remote repository and render HTML report:
 mkdir -p ./report
 chmod o+rw ./report
 
-docker run --rm \
+docker run --rm -ti \
   -v $(pwd)/report:/archi/report \
   -e GIT_REPOSITORY=https://github.com/WoozyMasta/archimate-ci-image-example.git \
-  -e HTML_REPORT_ENABLED=true \
-  -e JASPER_REPORT_ENABLED=false \
-  -e CSV_REPORT_ENABLED=false \
-  -e EXPORT_MODEL_ENABLED=false \
+  -e ARCHI_HTML_REPORT_ENABLED=true \
+  -e ARCHI_JASPER_REPORT_ENABLED=false \
+  -e ARCHI_CSV_REPORT_ENABLED=true \
+  -e ARCHI_EXPORT_MODEL_ENABLED=true \
   ghcr.io/woozymasta/archimate-ci:4.9.0
 ```
 
 An example with handling a local repository:
 
 ```bash
+cd /path/to/exist/repository
 mkdir -p ./report
 chmod o+rw ./report
 
-docker run --rm \
-  -v /path/to/model:/archi/project \
+docker run --rm -ti \
+  -v $(pwd):/archi/project \
   -v $(pwd)/report:/archi/report \
   ghcr.io/woozymasta/archimate-ci:4.9.0
 ```
@@ -77,17 +78,36 @@ Configuration for connecting to the git repository:
 
 Options for managing model export:
 
-* **`MODEL_PATH`**=`/archi/project` - The path where the git repository with
-  the architectural model will be cloned or connected;
-* **`REPORT_PATH`**=`/archi/report` - Path where reports will be saved;
-* **`HTML_REPORT_ENABLED`**=`true` - Generate HTML report;
-* **`JASPER_REPORT_ENABLED`**=`true` - Generate Jasper reports;
-* **`JASPER_REPORT_FORMATS`**=`PDF,DOCX` - Formats for Jasper reports should be
-  separated by commas. Valid values: `PDF`, `HTML`, `RTF`, `PPT`, `ODT`, `DOCX`;
-* **`JASPER_REPORT_TITLE`** - The title for the Jasper report, the default is
-  the project name;
-* **`CSV_REPORT_ENABLED`**=`true` - Generate CSV report;
-* **`EXPORT_MODEL_ENABLED`**=`true` - Export model in `*.archimate` format.
+* **`ARCHI_PROJECT_PATH`**=`/archi/project` - The path where the git repository
+  with the architectural model will be cloned or connected;
+* **`ARCHI_REPORT_PATH`**=`/archi/report` - Path where reports will be saved;
+* **`ARCHI_HTML_REPORT_ENABLED`**=`true` - Generate HTML report;
+* **`ARCHI_HTML_REPORT_PATH`**=`$ARCHI_REPORT_PATH/html` - Path for save HTML
+  report;
+* **`ARCHI_JASPER_REPORT_ENABLED`**=`false` - Generate Jasper reports;
+* **`ARCHI_JASPER_REPORT_PATH`**=`$ARCHI_REPORT_PATH/jasper` - Path for save
+  Jasper report;
+* **`ARCHI_JASPER_REPORT_FORMATS`**=`PDF,DOCX` - Formats for Jasper reports
+  should be separated by commas. Valid values: `PDF`, `HTML`, `RTF`, `PPT`,
+  `ODT`, `DOCX`;
+* **`ARCHI_JASPER_REPORT_TITLE`** - The title for the Jasper report, the
+  default is the model/project name;
+* **`ARCHI_CSV_REPORT_ENABLED`**=`false` - Generate CSV report;
+* **`ARCHI_CSV_REPORT_PATH`**=`$ARCHI_REPORT_PATH/csv` - Path for save CSV
+  report;
+* **`ARCHI_EXPORT_MODEL_ENABLED`**=`true` - Export model in `*.archimate`
+  format.
+* **`ARCHI_EXPORT_MODEL_PATH`**=`$ARCHI_REPORT_PATH` - Path for save model;
+* **`ARCHI_APP`**=`com.archimatetool.commandline.app` application name.
+
+## GitHub Actions Configuration
+
+* **`GITHUB_SERVER_URL`**=`https://github.com` - GitHub server URL;
+* **`GITHUB_PAGES_DOMAIN` - Custom domain CNAME for pages;
+* **`GITHUB_PAGES_BRANCH`**=`gh-pages` - Branch for store reports used in pages;
+* **`GIT_SUBTREE_PREFIX`**=`.archi_report` - Directory for store reports in
+  model branch.
+
 
 ## Build Container
 
@@ -107,12 +127,27 @@ flag
 
 ---
 
+If you use podman, unshare mounted volumes to user with id 1000.
+
+```bash
+mkdir -p ./report
+
+podman unshare chown 1000 -R $(pwd)/model
+podman run --rm -ti \
+  -v $(pwd)/report:/archi/report \
+  -e GIT_REPOSITORY=https://github.com/WoozyMasta/archimate-ci-image-example.git \
+  -e ARCHI_JASPER_REPORT_ENABLED=false \
+  ghcr.io/woozymasta/archimate-ci:4.9.0
+```
+
+---
+
 If you are using a private git repository hosted behind a VPN, the tunnel
 interface or name resolution might not be available in the container, use the
 host network in the container and force the DNS record forward.
 
 ```bash
-docker run --rm \
+docker run --rm -ti \
   -v $(pwd)/archi:/archi \
   -e GIT_REPOSITORY=https://github.com/WoozyMasta/archimate-ci-image-example.git
   --network=host

@@ -1,3 +1,11 @@
+/.github
 /report
+_config.yml
+.env
+actions.yml
+scheme.png
 README.md
 CHANGELOG.md
+CONTRIBUTING.md
+CNAME
+LICENSE
