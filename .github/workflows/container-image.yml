@@ -66,19 +66,22 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Set env
-        run: echo "TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
+        id: env
+        run: |
+          echo ::set-output name=PROJECT_NAME::${GITHUB_REF#refs/*/}
+          echo ::set-output name=PROJECT_BRANCH::${GITHUB_REF#refs/heads/}
+          echo ::set-output name=PROJECT_TAG::${GITHUB_REF#refs/tags/}
 
       - name: Create Release
         id: create_release
         uses: ncipollo/release-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: ${{ github.ref }}
           body: |
             Pull image:
 
-            * `docker pull ghcr.io/woozymasta/archimate-ci-image:${{ env.TAG }}`
-            * `docker pull quay.io/woozymasta/archimate-ci-image:${{ env.TAG }}`
-            * `docker pull docker.io/woozymasta/archimate-ci-image:${{ env.TAG }}`
+            * `docker pull ghcr.io/woozymasta/archimate-ci-image:${{ steps.env.outputs.PROJECT_TAG }}`
+            * `docker pull quay.io/woozymasta/archimate-ci-image:${{ steps.env.outputs.PROJECT_TAG }}`
+            * `docker pull docker.io/woozymasta/archimate-ci-image:${{ steps.env.outputs.PROJECT_TAG }}`
           draft: false
           prerelease: false
