@@ -105,20 +105,20 @@ urlencode() {
 update_html() {
   if [ "${ARCHI_CSV_REPORT_ENABLED,,}" == true ]; then
     for item in {elements,properties,relations}; do
-      _li="<li><a href=\"/${item}.csv\" class=\"go\">${item^}</a></li>"
+      _li="<li><a href=\"${item}.csv\" class=\"go\">${item^}</a></li>"
       sed "/modal.*i18n-about/i $_li" -i "$ARCHI_REPORT_PATH/index.html"
     done
   fi
 
   if [ "${ARCHI_JASPER_REPORT_ENABLED,,}" == true ]; then
     for item in ${ARCHI_JASPER_REPORT_FORMATS//,/ }; do
-      _li="<li><a href=\"/$_project.${item,,}\" class=\"go\">${item^^}</a></li>"
+      _li="<li><a href=\"$_project.${item,,}\" class=\"go\">${item^^}</a></li>"
       sed "/modal.*i18n-about/i $_li" -i "$ARCHI_REPORT_PATH/index.html"
     done
   fi
 
   if [ "${ARCHI_EXPORT_MODEL_ENABLED,,}" == true ]; then
-    _li="<li><a href=\"/$_project.archimate\" class=\"go\">Model</a></li>"
+    _li="<li><a href=\"$_project.archimate\" class=\"go\">Model</a></li>"
     sed "/modal.*i18n-about/i $_li" -i "$ARCHI_REPORT_PATH/index.html"
   fi
 }
@@ -197,8 +197,11 @@ if [ "${GITHUB_ACTIONS:-}" == true ]; then
   # Commit and push subtree
   git add --force $GIT_SUBTREE_PREFIX
   git commit --message "Archimate report ${GITHUB_ACTION:-0}:${GITHUB_JOB:-0}"
-  git subtree push --squash --prefix $GIT_SUBTREE_PREFIX \
-    origin "$GITHUB_PAGES_BRANCH"
+
+  _subtree="$(
+    git subtree split --squash --prefix $GIT_SUBTREE_PREFIX "$GITHUB_REF_NAME"
+  )"
+  git push origin "$_subtree:$GITHUB_PAGES_BRANCH" --force
 
   exit 0
 

@@ -12,7 +12,7 @@ is installed in the container.
 
 <!-- markdownlint-disable -->
 <p align="center" width="100%">
-  <img src="https://raw.githubusercontent.com/WoozyMasta/archimate-ci-image/master/scheme.png" />
+  <img src="https://raw.githubusercontent.com/WoozyMasta/archimate-ci-image/master/extras/scheme.png" />
 </p>
 
 For ease of use, the entrypoint.sh script is run in the container,
@@ -38,9 +38,9 @@ You can check the operation of the container using the [example][]
 
 You can pull image from registries:
 
-* `ghcr.io/woozymasta/archimate-ci:4.9.1-0.8`
-* `quay.io/woozymasta/archimate-ci:4.9.1-0.8`
-* `docker.io/woozymasta/archimate-ci:4.9.1-0.8`
+* `ghcr.io/woozymasta/archimate-ci:4.9.1-0.9`
+* `quay.io/woozymasta/archimate-ci:4.9.1-0.9`
+* `docker.io/woozymasta/archimate-ci:4.9.1-0.9`
 
 ## Run Container
 
@@ -57,7 +57,7 @@ docker run --rm -ti \
   -e ARCHI_JASPER_REPORT_ENABLED=false \
   -e ARCHI_CSV_REPORT_ENABLED=true \
   -e ARCHI_EXPORT_MODEL_ENABLED=true \
-  ghcr.io/woozymasta/archimate-ci:4.9.1-0.8
+  ghcr.io/woozymasta/archimate-ci:4.9.1-0.9
 ```
 
 An example with handling a local repository:
@@ -70,13 +70,13 @@ chmod o+rw ./report
 docker run --rm -ti \
   -v $(pwd):/archi/project \
   -v $(pwd)/report:/archi/report \
-  ghcr.io/woozymasta/archimate-ci:4.9.1-0.8
+  ghcr.io/woozymasta/archimate-ci:4.9.1-0.9
 ```
 
 Working with the CLI directly:
 
 ```bash
-docker run --rm -ti ghcr.io/woozymasta/archimate-ci:4.9.1-0.8 --help
+docker run --rm -ti ghcr.io/woozymasta/archimate-ci:4.9.1-0.9 --help
 ```
 
 ## Configuration
@@ -142,6 +142,8 @@ All inputs equivalent to environment variables:
 
 ## GitHub Actions Example
 
+Add a configuration like this to your actions:
+
 ```yml
 jobs:
   archi_report:
@@ -156,7 +158,7 @@ jobs:
 
       - name: Deploy Archi report
         id: archi
-        uses: WoozyMasta/archimate-ci-image@4.9.1-0.8
+        uses: WoozyMasta/archimate-ci-image@4.9.1-0.9
         with:
           archiHtmlReportEnabled: true
           archiJasperReportEnabled: true
@@ -166,13 +168,19 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 ```
 
+In the repository settings, set the branch for publishing pages that you
+specified in `githubPagesBranch` or the `GITHUB_PAGES_BRANCH` variable
+(`gh-pages` by default).
+
+![pages](extras/github_pages.png)
+
 ## GitLab CI Example
 
 ```yml
 pages:
   stage: build
   image:
-    name: woozymasta/archimate-ci-image:4.9.1-0.8
+    name: woozymasta/archimate-ci-image:4.9.1-0.9
 
   script:
     - /opt/Archi/docker-entrypoint.sh
@@ -203,8 +211,8 @@ pages:
 
 ```bash
 docker build \
-  --tag archimate-ci:4.9.1-0.8 \
-  --build-arg="ARCHI_VERSION=4.9.1-0.8" \
+  --tag archimate-ci:4.9.1-0.9 \
+  --build-arg="ARCHI_VERSION=4.9.1-0.9" \
   --build-arg="COARCHI_VERSION=0.8.1.202112061132" \
   ./
 ```
@@ -227,7 +235,7 @@ podman run --rm -ti \
   -v $(pwd)/report:/archi/report \
   -e GIT_REPOSITORY=https://github.com/WoozyMasta/archimate-ci-image-example.git \
   -e ARCHI_JASPER_REPORT_ENABLED=false \
-  ghcr.io/woozymasta/archimate-ci:4.9.1-0.8
+  ghcr.io/woozymasta/archimate-ci:4.9.1-0.9
 ```
 
 ---
@@ -242,7 +250,7 @@ docker run --rm -ti \
   -e GIT_REPOSITORY=https://github.com/WoozyMasta/archimate-ci-image-example.git
   --network=host
   --add-host="$(getent hosts gitlab.internal.tld | awk '{print $2 ":" $1}')"
-  ghcr.io/woozymasta/archimate-ci:4.9.1-0.8
+  ghcr.io/woozymasta/archimate-ci:4.9.1-0.9
 ```
 
 <!-- links -->
@@ -250,4 +258,8 @@ docker run --rm -ti \
 [Archi]: https://www.archimatetool.com "The Open Source modelling toolkit for creating ArchiMate models and sketches."
 [Archi repository]: https://github.com/archimatetool/archi "Archi: ArchiMate Modelling Tool "
 [coArchi]: https://github.com/archimatetool/archi-modelrepository-plugin "coArchi – Model Collaboration for Archi"
-[example]: https://github.com/WoozyMasta/archimate-ci-image-example.git "Example Archi model for archimate-ci-image"
+
+[example-gh]: https://github.com/WoozyMasta/archimate-ci-image-example.git
+[demo-gh-pages]: https://woozymasta.github.io/archimate-ci-image-example/?view=6213
+[example-gl]: https://gitlab.com/WoozyMasta/archimate-ci-image-example
+[demo-gl-pages]: https://woozymasta.gitlab.io/archimate-ci-image-example
