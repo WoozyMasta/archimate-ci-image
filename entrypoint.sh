@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -exuo pipefail
 
 # Vars
 # ----
@@ -156,9 +156,6 @@ fi
 # Run in GitHub actions
 if [ "${GITHUB_ACTIONS:-}" == true ]; then
   echo "Run Archi report generation in GitHub actions"
-
-  ls -la
-  pwd
 
   # Prepare vars
   : "${GITHUB_REPOSITORY:?Repository name not set}"
