@@ -6,4 +6,54 @@ branding:
   color: blue
 runs:
   using: docker
-  image: Dockerfile
+  image: docker://ghcr.io/woozymasta/archimate-ci-image:4.9.1-0.3
+  env:
+    GITHUB_TOKEN: ${{ inputs.githubToken }}
+    ARCHI_HTML_REPORT_ENABLED: ${{ inputs.archiHtmlReportEnabled }}
+    ARCHI_JASPER_REPORT_ENABLED: ${{ inputs.archiJasperReportEnabled }}
+    ARCHI_JASPER_REPORT_FORMATS: ${{ inputs.archiJasperReportFormats }}
+    ARCHI_JASPER_REPORT_TITLE: ${{ inputs.archiJasperReportTitle }}
+    ARCHI_CSV_REPORT_ENABLED: ${{ inputs.archiCsvReportEnabled }}
+    ARCHI_EXPORT_MODEL_ENABLED: ${{ inputs.archiExportModelEnabled }}
+    GITHUB_SERVER_URL: ${{ inputs.githubServerURL }}
+    GITHUB_PAGES_DOMAIN: ${{ inputs.githubPagesDomain }}
+    GITHUB_PAGES_BRANCH: ${{ inputs.githubPagesBranch }}
+    GIT_SUBTREE_PREFIX: ${{ inputs.gitSubtreePrefix }}
+
+
+inputs:
+  githubToken:
+    description: GitHub token for accessing the git repository
+    required: false
+  archiHtmlReportEnabled:
+    description: Generate HTML report
+    required: false
+  archiJasperReportEnabled:
+    description: Generate Jasper reports
+    required: false
+  archiJasperReportFormats:
+    description: >-
+      Formats for Jasper reports should be separated by commas.
+      Valid values: PDF, HTML, RTF, PPT, ODT and DOCX
+    required: false
+  archiJasperReportTitle:
+    description: The title for the Jasper report, the default is the model name
+    required: false
+  archiCsvReportEnabled:
+    description: Generate CSV report
+    required: false
+  archiExportModelEnabled:
+    description: Export model in *.archimate file
+    required: false
+  githubServerURL:
+    description: GitHub server URL
+    required: false
+  githubPagesDomain:
+    description: Custom domain CNAME for pages
+    required: false
+  githubPagesBranch:
+    description: Branch for store reports used in pages
+    required: false
+  gitSubtreePrefix:
+    description: Directory for store reports in model branch
+    required: false

@@ -1,4 +1,4 @@
-# Archimate container image for CI
+# Archimate container image for CI <!-- omit in toc -->
 
 [Archi][Archi repository] container image for use in continuous integration
 pipelines. With this container, you can implement automatic report generation
@@ -21,13 +21,25 @@ for cloning.
 
 You can check the operation of the container using the [example][]
 
+## Table of Contents <!-- omit in toc -->
+
+* [Container image](#container-image)
+* [Run Container](#run-container)
+* [Configuration](#configuration)
+* [GitHub Actions Configuration](#github-actions-configuration)
+  * [Variables](#variables)
+  * [Inputs](#inputs)
+* [GitHub Actions Example](#github-actions-example)
+* [Build Container](#build-container)
+* [Solving Potential Problems](#solving-potential-problems)
+
 ## Container image
 
 You can pull image from registries:
 
-* `ghcr.io/woozymasta/archimate-ci:4.9.0`
-* `quay.io/woozymasta/archimate-ci:4.9.0`
-* `docker.io/woozymasta/archimate-ci:4.9.0`
+* `ghcr.io/woozymasta/archimate-ci:4.9.1`
+* `quay.io/woozymasta/archimate-ci:4.9.1`
+* `docker.io/woozymasta/archimate-ci:4.9.1`
 
 ## Run Container
 
@@ -44,7 +56,7 @@ docker run --rm -ti \
   -e ARCHI_JASPER_REPORT_ENABLED=false \
   -e ARCHI_CSV_REPORT_ENABLED=true \
   -e ARCHI_EXPORT_MODEL_ENABLED=true \
-  ghcr.io/woozymasta/archimate-ci:4.9.0
+  ghcr.io/woozymasta/archimate-ci:4.9.1
 ```
 
 An example with handling a local repository:
@@ -57,13 +69,13 @@ chmod o+rw ./report
 docker run --rm -ti \
   -v $(pwd):/archi/project \
   -v $(pwd)/report:/archi/report \
-  ghcr.io/woozymasta/archimate-ci:4.9.0
+  ghcr.io/woozymasta/archimate-ci:4.9.1
 ```
 
 Working with the CLI directly:
 
 ```bash
-docker run --rm -ti ghcr.io/woozymasta/archimate-ci:4.9.0 --help
+docker run --rm -ti ghcr.io/woozymasta/archimate-ci:4.9.1 --help
 ```
 
 ## Configuration
@@ -102,20 +114,63 @@ Options for managing model export:
 
 ## GitHub Actions Configuration
 
+### Variables
+
+* **`GITHUB_TOKEN`** - Use default token, or you can set some token from secrret `${{ secrets.ACCESS_TOKEN }}`
 * **`GITHUB_SERVER_URL`**=`https://github.com` - GitHub server URL;
-* **`GITHUB_PAGES_DOMAIN` - Custom domain CNAME for pages;
+* **`GITHUB_PAGES_DOMAIN`** - Custom domain CNAME for pages;
 * **`GITHUB_PAGES_BRANCH`**=`gh-pages` - Branch for store reports used in pages;
 * **`GIT_SUBTREE_PREFIX`**=`.archi_report` - Directory for store reports in
   model branch.
 
+### Inputs
+
+All inputs equivalent to environment variables:
+
+* `githubToken`
+* `archiHtmlReportEnabled`
+* `archiJasperReportEnabled`
+* `archiJasperReportFormats`
+* `archiJasperReportTitle`
+* `archiCsvReportEnabled`
+* `archiExportModelEnabled`
+* `githubServerURL`
+* `githubPagesDomain`
+* `githubPagesBranch`
+* `gitSubtreePrefix`
+
+## GitHub Actions Example
+
+```yml
+jobs:
+  archi_report:
+    permissions:
+      contents: write
+      pages: write
+    runs-on: ubuntu-latest
+    name: Deploy Archi report HTML to GitHub Pages
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Deploy Archi report
+        id: archi
+        uses: WoozyMasta/archimate-ci-image@4.9.1-0.1
+        with:
+          archiHtmlReportEnabled: true
+          archiJasperReportEnabled: true
+          archiJasperReportFormats: PDF
+          archiCsvReportEnabled: false
+          archiExportModelEnabled: true
+```
 
 ## Build Container
 
 ```bash
 docker build \
-  --tag archimate-ci:4.9.0 \
-  --build-arg="ARCHI_VERSION=4.9.0" \
-  --build-arg="COARCHI_VERSION=0.8.0.202110121448" \
+  --tag archimate-ci:4.9.1 \
+  --build-arg="ARCHI_VERSION=4.9.1" \
+  --build-arg="COARCHI_VERSION=0.8.1.202112061132" \
   ./
 ```
 
@@ -137,7 +192,7 @@ podman run --rm -ti \
   -v $(pwd)/report:/archi/report \
   -e GIT_REPOSITORY=https://github.com/WoozyMasta/archimate-ci-image-example.git \
   -e ARCHI_JASPER_REPORT_ENABLED=false \
-  ghcr.io/woozymasta/archimate-ci:4.9.0
+  ghcr.io/woozymasta/archimate-ci:4.9.1
 ```
 
 ---
@@ -152,7 +207,7 @@ docker run --rm -ti \
   -e GIT_REPOSITORY=https://github.com/WoozyMasta/archimate-ci-image-example.git
   --network=host
   --add-host="$(getent hosts gitlab.internal.tld | awk '{print $2 ":" $1}')"
-  ghcr.io/woozymasta/archimate-ci:4.9.0
+  ghcr.io/woozymasta/archimate-ci:4.9.1
 ```
 
 <!-- links -->

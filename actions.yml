@@ -1,9 +1,0 @@
-name: Deploy Archi Report
-description: Deploy Archimate model as static report site
-author: WoozyMasta, kagbe.leviy@gmail.com
-branding:
-  icon: book-open
-  color: blue
-runs:
-  using: docker
-  image: docker://ghcr.io/woozymasta/archimate-ci-image:4.9.1-0.3
