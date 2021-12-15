@@ -157,6 +157,9 @@ fi
 if [ "${GITHUB_ACTIONS:-}" == true ]; then
   echo "Run Archi report generation in GitHub actions"
 
+  ls -la
+  pwd
+
   # Prepare vars
   : "${GITHUB_REPOSITORY:?Repository name not set}"
   GITHUB_TOKEN="$(urlencode "${GITHUB_TOKEN:?Token not specified}")"
