@@ -4,6 +4,8 @@ ARG ARCHI_VERSION=4.9.1
 ARG COARCHI_VERSION=0.8.1.202112061132
 ARG TZ=UTC
 
+WORKDIR /archi
+
 SHELL ["/bin/bash", "-o", "pipefail", "-x", "-e", "-u", "-c"]
 
 # DL3015 ignored for suppress org.freedesktop.DBus.Error.ServiceUnknown
@@ -32,14 +34,12 @@ RUN ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && \
       tar zxf - -C /opt/ && \
     chmod +x /opt/Archi/Archi && \
     # Install Collaboration plugin \
-    mkdir -p /archi/.archi4/dropins/ && \
+    mkdir -p /root/.archi4/dropins /archi/report /archi/project && \
     curl "https://www.archimatetool.com/downloads/coarchi1/coArchi_$COARCHI_VERSION.archiplugin" \
        --output modelrepository.archiplugin && \
-    unzip modelrepository.archiplugin -d /archi/.archi4/dropins/ && \
+    unzip modelrepository.archiplugin -d  /root/.archi4/dropins/ && \
     rm modelrepository.archiplugin
 
 COPY entrypoint.sh /opt/Archi/
-
-WORKDIR /archi
 
 ENTRYPOINT [ "/opt/Archi/entrypoint.sh" ]

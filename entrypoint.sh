@@ -5,7 +5,7 @@ set -exuo pipefail
 # ----
 
 # Script environments
-: "${ARCHI_PROJECT_PATH:=/archi/project}"
+: "${ARCHI_PROJECT_PATH:=${GITHUB_WORKSPACE:-/archi/project}}"
 : "${ARCHI_REPORT_PATH:=/archi/report}"
 : "${ARCHI_HTML_REPORT_ENABLED:=true}"
 : "${ARCHI_JASPER_REPORT_ENABLED:=false}"
@@ -167,7 +167,6 @@ if [ "${GITHUB_ACTIONS:-}" == true ]; then
   _gh_repo+="${GITHUB_SERVER_URL//*\/\/}/$GITHUB_REPOSITORY.git"   # URL
 
   # Set actions specified paths
-  ARCHI_PROJECT_PATH="${GITHUB_WORKSPACE:-$ARCHI_PROJECT_PATH}"
   ARCHI_REPORT_PATH="$ARCHI_PROJECT_PATH/$GIT_SUBTREE_PREFIX"
   ARCHI_HTML_REPORT_PATH="$ARCHI_REPORT_PATH"
   ARCHI_CSV_REPORT_PATH="$ARCHI_REPORT_PATH"
