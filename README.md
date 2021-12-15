@@ -19,10 +19,9 @@ For ease of use, the entrypoint.sh script is run in the container,
 which processes the environment variables, and the native git client is used
 for cloning.
 
-You can check the operation of the container using the [example][]
-
 ## Table of Contents <!-- omit in toc -->
 
+* [Examples and Demo](#examples-and-demo)
 * [Container image](#container-image)
 * [Run Container](#run-container)
 * [Configuration](#configuration)
@@ -34,13 +33,19 @@ You can check the operation of the container using the [example][]
 * [Build Container](#build-container)
 * [Solving Potential Problems](#solving-potential-problems)
 
+## Examples and Demo
+
+[View GitHub Pages demo][demo-gh-pages] | [Example GitHub repository][example-gh]
+
+[View GitLab Pages demo][demo-gl-pages] | [Example GitLab repository][example-gl]
+
 ## Container image
 
 You can pull image from registries:
 
-* `ghcr.io/woozymasta/archimate-ci:4.9.1-0.9`
-* `quay.io/woozymasta/archimate-ci:4.9.1-0.9`
-* `docker.io/woozymasta/archimate-ci:4.9.1-0.9`
+* `ghcr.io/woozymasta/archimate-ci:4.9.1-1.0`
+* `quay.io/woozymasta/archimate-ci:4.9.1-1.0`
+* `docker.io/woozymasta/archimate-ci:4.9.1-1.0`
 
 ## Run Container
 
@@ -57,7 +62,7 @@ docker run --rm -ti \
   -e ARCHI_JASPER_REPORT_ENABLED=false \
   -e ARCHI_CSV_REPORT_ENABLED=true \
   -e ARCHI_EXPORT_MODEL_ENABLED=true \
-  ghcr.io/woozymasta/archimate-ci:4.9.1-0.9
+  ghcr.io/woozymasta/archimate-ci:4.9.1-1.0
 ```
 
 An example with handling a local repository:
@@ -70,13 +75,13 @@ chmod o+rw ./report
 docker run --rm -ti \
   -v $(pwd):/archi/project \
   -v $(pwd)/report:/archi/report \
-  ghcr.io/woozymasta/archimate-ci:4.9.1-0.9
+  ghcr.io/woozymasta/archimate-ci:4.9.1-1.0
 ```
 
 Working with the CLI directly:
 
 ```bash
-docker run --rm -ti ghcr.io/woozymasta/archimate-ci:4.9.1-0.9 --help
+docker run --rm -ti ghcr.io/woozymasta/archimate-ci:4.9.1-1.0 --help
 ```
 
 ## Configuration
@@ -142,7 +147,7 @@ All inputs equivalent to environment variables:
 
 ## GitHub Actions Example
 
-Add a configuration like this to your actions:
+Add a configuration like this to your actions `.github/workflows/main.yml` file:
 
 ```yml
 jobs:
@@ -158,7 +163,7 @@ jobs:
 
       - name: Deploy Archi report
         id: archi
-        uses: WoozyMasta/archimate-ci-image@4.9.1-0.9
+        uses: WoozyMasta/archimate-ci-image@4.9.1-1.0
         with:
           archiHtmlReportEnabled: true
           archiJasperReportEnabled: true
@@ -176,43 +181,48 @@ specified in `githubPagesBranch` or the `GITHUB_PAGES_BRANCH` variable
 
 ## GitLab CI Example
 
+Add a configuration like this to your `./.gitlab-ci.yml` file:
+
 ```yml
 pages:
   stage: build
   image:
-    name: woozymasta/archimate-ci-image:4.9.1-0.9
+    name: woozymasta/archimate-ci-image:4.9.1-1.0
+    entrypoint: [""]
 
   script:
-    - /opt/Archi/docker-entrypoint.sh
+    - /opt/Archi/entrypoint.sh
     
   variables:
-    MODEL_PATH: "$CI_PROJECT_DIR"
-    REPORT_PATH: "$CI_PROJECT_DIR/report"
-    HTML_REPORT_ENABLED: "true"
-    JASPER_REPORT_ENABLED: "true"
-    JASPER_REPORT_FORMATS: "PDF,DOCX"
-    JASPER_REPORT_TITLE: "true"
-    CSV_REPORT_ENABLED: "true"
-    EXPORT_MODEL_ENABLED: "true"
+    ARCHI_PROJECT_PATH: "$CI_PROJECT_DIR"
+    ARCHI_REPORT_PATH: "$CI_PROJECT_DIR/public"
+    ARCHI_HTML_REPORT_ENABLED: "true"
+    ARCHI_HTML_REPORT_PATH: "$CI_PROJECT_DIR/public"
+    ARCHI_JASPER_REPORT_ENABLED: "false"
+    ARCHI_JASPER_REPORT_FORMATS: "PDF,DOCX"
+    ARCHI_JASPER_REPORT_TITLE: "false"
+    ARCHI_CSV_REPORT_ENABLED: "false"
+    ARCHI_EXPORT_MODEL_ENABLED: "true"
 
   rules:
+    # Run only if roles exist or changed
     - if: $CI_COMMIT_BRANCH != null || $CI_PIPELINE_SOURCE == "merge_request_event"
       exists:
         - model/folder.xml
 
   artifacts:
     name: "$CI_JOB_NAME from $CI_PROJECT_NAME on $CI_COMMIT_REF_SLUG"
-    expire_in: 1 week
+    expire_in: never
     paths:
-      - report/html
+      - public
 ```
 
 ## Build Container
 
 ```bash
 docker build \
-  --tag archimate-ci:4.9.1-0.9 \
-  --build-arg="ARCHI_VERSION=4.9.1-0.9" \
+  --tag archimate-ci:4.9.1-1.0 \
+  --build-arg="ARCHI_VERSION=4.9.1-1.0" \
   --build-arg="COARCHI_VERSION=0.8.1.202112061132" \
   ./
 ```
@@ -235,7 +245,7 @@ podman run --rm -ti \
   -v $(pwd)/report:/archi/report \
   -e GIT_REPOSITORY=https://github.com/WoozyMasta/archimate-ci-image-example.git \
   -e ARCHI_JASPER_REPORT_ENABLED=false \
-  ghcr.io/woozymasta/archimate-ci:4.9.1-0.9
+  ghcr.io/woozymasta/archimate-ci:4.9.1-1.0
 ```
 
 ---
@@ -250,7 +260,7 @@ docker run --rm -ti \
   -e GIT_REPOSITORY=https://github.com/WoozyMasta/archimate-ci-image-example.git
   --network=host
   --add-host="$(getent hosts gitlab.internal.tld | awk '{print $2 ":" $1}')"
-  ghcr.io/woozymasta/archimate-ci:4.9.1-0.9
+  ghcr.io/woozymasta/archimate-ci:4.9.1-1.0
 ```
 
 <!-- links -->
@@ -262,4 +272,4 @@ docker run --rm -ti \
 [example-gh]: https://github.com/WoozyMasta/archimate-ci-image-example.git
 [demo-gh-pages]: https://woozymasta.github.io/archimate-ci-image-example/?view=6213
 [example-gl]: https://gitlab.com/WoozyMasta/archimate-ci-image-example
-[demo-gl-pages]: https://woozymasta.gitlab.io/archimate-ci-image-example
+[demo-gl-pages]: https://woozymasta.gitlab.io/archimate-ci-image-example/?view=6213
