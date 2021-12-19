@@ -194,28 +194,26 @@ pages:
     - /opt/Archi/entrypoint.sh
     
   variables:
-    ARCHI_PROJECT_PATH: "$CI_PROJECT_DIR"
-    ARCHI_REPORT_PATH: "$CI_PROJECT_DIR/public"
     ARCHI_HTML_REPORT_ENABLED: "true"
-    ARCHI_HTML_REPORT_PATH: "$CI_PROJECT_DIR/public"
-    ARCHI_JASPER_REPORT_ENABLED: "false"
+    ARCHI_JASPER_REPORT_ENABLED: "true"
     ARCHI_JASPER_REPORT_FORMATS: "PDF,DOCX"
-    ARCHI_JASPER_REPORT_TITLE: "false"
     ARCHI_CSV_REPORT_ENABLED: "false"
     ARCHI_EXPORT_MODEL_ENABLED: "true"
 
   rules:
-    # Run only if roles exist or changed
     - if: $CI_COMMIT_BRANCH != null || $CI_PIPELINE_SOURCE == "merge_request_event"
       exists:
         - model/folder.xml
 
   artifacts:
     name: "$CI_JOB_NAME from $CI_PROJECT_NAME on $CI_COMMIT_REF_SLUG"
-    expire_in: never
+    expire_in: 30d
     paths:
       - public
 ```
+
+In GitLab CI if `ARCHI_PROJECT_PATH` is undefined is set to `$CI_PROJECT_DIR`
+and all report paths are automatically set to `$CI_PROJECT_DIR/public`
 
 ## Build Container
 

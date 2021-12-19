@@ -5,7 +5,7 @@ set -euo pipefail
 # ----
 
 # Script environments
-: "${ARCHI_PROJECT_PATH:=${GITHUB_WORKSPACE:-/archi/project}}"
+: "${ARCHI_PROJECT_PATH:=${GITHUB_WORKSPACE:-${CI_PROJECT_DIR:-/archi/project}}}"
 : "${ARCHI_REPORT_PATH:=/archi/report}"
 : "${ARCHI_HTML_REPORT_ENABLED:=true}"
 : "${ARCHI_JASPER_REPORT_ENABLED:=false}"
@@ -126,6 +126,15 @@ update_html() {
 # Git clone wrap
 git_clone() { git clone "${1:?Repo url not set}" "$ARCHI_PROJECT_PATH"; }
 
+# GitLab log separator
+section_start () {
+  printf '\e[0Ksection_start:%s:%s[collapsed=true]\r\e[0K\e[1;36m%s\e[0m\n' \
+    "$(date +%s)" "$1" "${*:2}"
+}
+section_end () {
+  printf '\e[0Ksection_end:%s:%s\r\e[0K\n' "$(date +%s)" "$*"
+}
+
 # Fail message to stder and exit 1
 fail() { printf >&2 '%s\n' "$*"; exit 1; }
 
@@ -207,6 +216,24 @@ if [ "${GITHUB_ACTIONS:-}" == true ]; then
 
 fi
 
+# Run in GitLab CI
+if [ "${GITLAB_CI:-}" == true ]; then
+  echo "Run Archi report generation in GitLab CI"
+  section_start 'archi_report' 'Render ArchiMate report'
+
+  # Set actions specified paths
+  ARCHI_REPORT_PATH="$CI_PROJECT_DIR/public"
+  ARCHI_HTML_REPORT_PATH="$CI_PROJECT_DIR/public"
+  ARCHI_CSV_REPORT_PATH="$CI_PROJECT_DIR/public"
+  ARCHI_JASPER_REPORT_PATH="$CI_PROJECT_DIR/public"
+  ARCHI_EXPORT_MODEL_PATH="$CI_PROJECT_DIR/public"
+  cd "$ARCHI_PROJECT_PATH" && mkdir -p "$ARCHI_REPORT_PATH"
+
+  # Create report
+  archi_run
+  section_end 'Render ArchiMate report complete'
+  exit 0
+fi
 
 # Check and use exist or mounted model
 if [ -f "$ARCHI_PROJECT_PATH/model/folder.xml" ]; then
