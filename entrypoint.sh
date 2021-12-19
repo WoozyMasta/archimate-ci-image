@@ -231,6 +231,8 @@ if [ "${GITLAB_CI:-}" == true ]; then
 
   # Create report
   archi_run
+  [ "${ARCHI_HTML_REPORT_ENABLED,,}" == true ] && update_html
+
   section_end 'Render ArchiMate report complete'
   exit 0
 fi
