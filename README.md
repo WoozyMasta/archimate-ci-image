@@ -43,9 +43,9 @@ for cloning.
 
 You can pull image from registries:
 
-* `ghcr.io/woozymasta/archimate-ci:4.9.2-1.0.0`
-* `quay.io/woozymasta/archimate-ci:4.9.2-1.0.0`
-* `docker.io/woozymasta/archimate-ci:4.9.2-1.0.0`
+* `ghcr.io/woozymasta/archimate-ci:4.9.2-1.0.3`
+* `quay.io/woozymasta/archimate-ci:4.9.2-1.0.3`
+* `docker.io/woozymasta/archimate-ci:4.9.2-1.0.3`
 
 ## Run Container
 
@@ -62,7 +62,7 @@ docker run --rm -ti \
   -e ARCHI_JASPER_REPORT_ENABLED=false \
   -e ARCHI_CSV_REPORT_ENABLED=true \
   -e ARCHI_EXPORT_MODEL_ENABLED=true \
-  ghcr.io/woozymasta/archimate-ci:4.9.2-1.0.0
+  ghcr.io/woozymasta/archimate-ci:4.9.2-1.0.3
 ```
 
 An example with handling a local repository:
@@ -75,13 +75,13 @@ chmod o+rw ./report
 docker run --rm -ti \
   -v $(pwd):/archi/project \
   -v $(pwd)/report:/archi/report \
-  ghcr.io/woozymasta/archimate-ci:4.9.2-1.0.0
+  ghcr.io/woozymasta/archimate-ci:4.9.2-1.0.3
 ```
 
 Working with the CLI directly:
 
 ```bash
-docker run --rm -ti ghcr.io/woozymasta/archimate-ci:4.9.2-1.0.0 --help
+docker run --rm -ti ghcr.io/woozymasta/archimate-ci:4.9.2-1.0.3 --help
 ```
 
 ## Configuration
@@ -163,7 +163,7 @@ jobs:
 
       - name: Deploy Archi report
         id: archi
-        uses: WoozyMasta/archimate-ci-image@4.9.2-1.0.0
+        uses: WoozyMasta/archimate-ci-image@4.9.2-1.0.3
         with:
           archiHtmlReportEnabled: true
           archiJasperReportEnabled: true
@@ -187,7 +187,7 @@ Add a configuration like this to your `./.gitlab-ci.yml` file:
 pages:
   stage: build
   image:
-    name: woozymasta/archimate-ci-image:4.9.2-1.0.0
+    name: woozymasta/archimate-ci-image:4.9.2-1.0.3
     entrypoint: [""]
 
   script:
@@ -220,7 +220,7 @@ and all report paths are automatically set to `$CI_PROJECT_DIR/public`
 ```bash
 docker build \
   --tag archimate-ci:4.9.2 \
-  --build-arg="ARCHI_VERSION=4.9.2-1.0.0" \
+  --build-arg="ARCHI_VERSION=4.9.2-1.0.3" \
   --build-arg="COARCHI_VERSION=0.8.2.202202161341" \
   ./
 ```
@@ -243,7 +243,7 @@ podman run --rm -ti \
   -v $(pwd)/report:/archi/report \
   -e GIT_REPOSITORY=https://github.com/WoozyMasta/archimate-ci-image-example.git \
   -e ARCHI_JASPER_REPORT_ENABLED=false \
-  ghcr.io/woozymasta/archimate-ci:4.9.2-1.0.0
+  ghcr.io/woozymasta/archimate-ci:4.9.2-1.0.3
 ```
 
 ---
@@ -258,7 +258,7 @@ docker run --rm -ti \
   -e GIT_REPOSITORY=https://github.com/WoozyMasta/archimate-ci-image-example.git
   --network=host
   --add-host="$(getent hosts gitlab.internal.tld | awk '{print $2 ":" $1}')"
-  ghcr.io/woozymasta/archimate-ci:4.9.2-1.0.0
+  ghcr.io/woozymasta/archimate-ci:4.9.2-1.0.3
 ```
 
 <!-- links -->

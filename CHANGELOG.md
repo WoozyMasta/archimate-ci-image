@@ -6,7 +6,7 @@ itself. For example `4.9.1-1.0.1`
 
 ## [Unreleased]
 
-## [4.9.2-1.0.0] - 2022-02-17
+## [4.9.2-1.0.3] - 2022-02-17
 
 ### Changed <!-- markdownlint-disable no-duplicate-header -->
 
