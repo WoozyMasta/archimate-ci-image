@@ -24,6 +24,7 @@ RUN ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && \
       git \
       openssh-client \
       unzip && \
+      yq && \
     apt-get clean && \
     update-ca-certificates && \
     rm -rf /var/lib/apt/lists/* && \
