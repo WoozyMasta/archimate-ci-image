@@ -40,7 +40,7 @@ RUN ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && \
        --output modelrepository.archiplugin && \
     unzip modelrepository.archiplugin -d /root/.archi4/dropins/ && \
     rm modelrepository.archiplugin && \
-    wget https://github.com/mikefarah/yq/releases/download/v4.27.5/yq_darwin_amd64 -O /usr/bin/yq &&\
+    curl -O https://github.com/mikefarah/yq/releases/download/v4.27.5/yq_darwin_amd64 -output /usr/bin/yq &&\
     chmod +x /usr/bin/yq
 
 COPY entrypoint.sh /opt/Archi/
