@@ -19,7 +19,7 @@ runs:
     GITHUB_PAGES_DOMAIN: ${{ inputs.githubPagesDomain }}
     GITHUB_PAGES_BRANCH: ${{ inputs.githubPagesBranch }}
     GIT_SUBTREE_PREFIX: ${{ inputs.gitSubtreePrefix }}
-
+    DEBUG: ${{ inputs.debugAction }}
 
 inputs:
   githubToken:
@@ -56,4 +56,7 @@ inputs:
     required: false
   gitSubtreePrefix:
     description: Directory for store reports in model branch
+    required: false
+  debugAction:
+    description: bash -x
     required: false

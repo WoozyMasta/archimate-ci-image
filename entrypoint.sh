@@ -1,4 +1,6 @@
 #!/bin/bash
+
+[ "${DEBUG:-false}" = true ] && set -x
 set -euo pipefail
 
 # Vars

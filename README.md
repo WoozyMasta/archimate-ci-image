@@ -121,6 +121,7 @@ Options for managing model export:
   format.
 * **`ARCHI_EXPORT_MODEL_PATH`**=`$ARCHI_REPORT_PATH` - Path for save model;
 * **`ARCHI_APP`**=`com.archimatetool.commandline.app` application name.
+* **`DEBUG`**=`false` - enable `bash -x`
 
 ### GitHub Actions Configuration
 
@@ -148,6 +149,7 @@ All inputs equivalent to environment variables:
 * `githubPagesDomain`
 * `githubPagesBranch`
 * `gitSubtreePrefix`
+* `debugAction`
 
 ## GitHub Actions Example
 

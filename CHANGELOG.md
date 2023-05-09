@@ -15,6 +15,10 @@ itself. For example `4.9.1-1.0.1`
 * Fix [#7](https://github.com/WoozyMasta/archimate-ci-image/issues/7)
   model name selection changed to use only the first occurrence
 
+### Added <!-- markdownlint-disable no-duplicate-header -->
+
+* `DEBUG` env
+
 ## [4.9.2-1.0.3] - 2022-02-17
 
 ### Changed <!-- markdownlint-disable no-duplicate-header -->
