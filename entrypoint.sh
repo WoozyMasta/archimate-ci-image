@@ -198,9 +198,9 @@ if [ "${GITHUB_ACTIONS:-}" == true ]; then
   # Change git repo settings
   # git remote set-url origin "$_gh_repo"
   ! git config --get user.name >/dev/null &&
-    git config --local user.name "${GITHUB_ACTOR:-nobody}"
+    git config --global user.name "${GITHUB_ACTOR:-nobody}"
   ! git config --get user.email >/dev/null &&
-    git config --local user.email \
+    git config --global user.email \
       "${GITHUB_ACTOR:-nobody}@users.noreply.${GITHUB_SERVER_URL//*\/\/}"
 
   # Create report
