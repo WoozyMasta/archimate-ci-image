@@ -17,12 +17,14 @@ jobs:
 
       - name: Set env
         id: env
+        shell: bash
         run: |
           echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
           echo "repository=${GITHUB_REPOSITORY,,}" >> $GITHUB_OUTPUT
 
       - name: debug env
         id: debug
+        shell: bash
         run: |
           echo ${{ steps.env.outputs.repository }}:${{ steps.env.outputs.tag }}
           echo ${GITHUB_REPOSITORY,,}
