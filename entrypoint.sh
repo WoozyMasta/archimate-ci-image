@@ -153,8 +153,11 @@ fi
 
 # Get project title
 if [ -f "$ARCHI_PROJECT_PATH/model/folder.xml" ]; then
-  _project="$(grep -Pom1 'name="\K([^"]*)' \
-    "$ARCHI_PROJECT_PATH/model/folder.xml")"
+  _project="$(
+    grep -Pom1 'name="\K([^"]*)' \
+      "$ARCHI_PROJECT_PATH/model/folder.xml" | \
+      head -1
+  )"
 elif [ -n "${GIT_REPOSITORY:-}" ]; then
   _project="$(basename -s .git "$GIT_REPOSITORY")"
 else
