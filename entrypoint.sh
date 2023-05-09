@@ -215,7 +215,7 @@ if [ "${GITHUB_ACTIONS:-}" == true ]; then
   git commit --message "Archimate report ${GITHUB_ACTION:-0}:${GITHUB_JOB:-0}"
 
   _subtree="$(
-    git subtree split --squash --prefix "$GIT_SUBTREE_PREFIX" "$GITHUB_REF_NAME"
+    git subtree split --prefix "$GIT_SUBTREE_PREFIX" "$GITHUB_REF_NAME"
   )"
   git push origin "$_subtree:$GITHUB_PAGES_BRANCH" --force
 

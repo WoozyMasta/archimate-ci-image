@@ -48,7 +48,9 @@ itself. For example `4.9.1-1.0.1`
 <!-- Links -->
 [Archi]: https://github.com/archimatetool/archi "Archi: ArchiMate Modelling Tool"
 <!-- Version compare links -->
-[Unreleased]: https://github.com/WoozyMasta/archimate-ci-image/compare/4.9.1-1.0.2...HEAD
+[Unreleased]: https://github.com/WoozyMasta/archimate-ci-image/compare/5.0.2-1.0.4...HEAD
+[5.0.2-1.0.4]: https://github.com/WoozyMasta/archimate-ci-image/compare/4.9.2-1.0.3...5.0.2-1.0.4
+[4.9.2-1.0.3]: https://github.com/WoozyMasta/archimate-ci-image/compare/4.9.1-1.0.2...4.9.2-1.0.3
 [4.9.1-1.0.2]: https://github.com/WoozyMasta/archimate-ci-image/compare/4.9.1-1.0.1...4.9.1-1.0.2
 [4.9.1-1.0.1]: https://github.com/WoozyMasta/archimate-ci-image/compare/4.9.1-1.0...4.9.1-1.0.1
 [4.9.1-1.0]: https://github.com/WoozyMasta/archimate-ci-image/tree/4.9.1-1.0
