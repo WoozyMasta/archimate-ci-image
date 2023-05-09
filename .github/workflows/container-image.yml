@@ -20,14 +20,14 @@ jobs:
         shell: bash
         run: |
           echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-          echo "repository=${GITHUB_REPOSITORY,,}" >> $GITHUB_OUTPUT
+          echo "repository=$(echo "$GITHUB_REPOSITORY" | tr '[:upper:]' '[:lower:]' )" >> $GITHUB_OUTPUT
 
       - name: debug env
         id: debug
         shell: bash
         run: |
           echo ${{ steps.env.outputs.repository }}:${{ steps.env.outputs.tag }}
-          echo ${GITHUB_REPOSITORY,,}
+          echo "$GITHUB_REPOSITORY" | tr '[:upper:]' '[:lower:]'
           echo $GITHUB_REPOSITORY
 
       - name: Log in to GitHub Container registry
