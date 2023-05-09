@@ -1,4 +1,4 @@
-ARG ARCHIMATE_CI_IMAGE=ghcr.io/woozymasta/archimate-ci
+ARG ARCHIMATE_CI_IMAGE=ghcr.io/woozymasta/archimate-ci-image
 ARG ARCHIMATE_CI_VERSION=5.0.2-1.0.4
 
 FROM $ARCHIMATE_CI_IMAGE:$ARCHIMATE_CI_VERSION AS base

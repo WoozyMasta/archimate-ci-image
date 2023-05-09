@@ -47,7 +47,6 @@ jobs:
             ghcr.io/woozymasta/archimate-ci-image:latest
             docker.io/woozymasta/archimate-ci-image:${{ steps.env.outputs.tag }}
             docker.io/woozymasta/archimate-ci-image:latest
-          build-args: STATIC_BASH_VERSION=${{ steps.static-bash.outputs.release }}
 
       - name: Build and push rootless container image
         uses: docker/build-push-action@v4
