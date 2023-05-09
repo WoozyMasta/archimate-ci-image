@@ -39,9 +39,7 @@ RUN ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && \
        --data-raw "zoob=coArchi_$COARCHI_VERSION.archiplugin" \
        --output modelrepository.archiplugin && \
     unzip modelrepository.archiplugin -d /root/.archi4/dropins/ && \
-    rm modelrepository.archiplugin && \
-    curl -O https://github.com/mikefarah/yq/releases/download/v4.27.5/yq_darwin_amd64 -output /usr/bin/yq &&\
-    chmod +x /usr/bin/yq
+    rm modelrepository.archiplugin
 
 COPY entrypoint.sh /opt/Archi/
 
