@@ -18,8 +18,8 @@ jobs:
       - name: Set env
         id: env
         run: |
-          echo ::set-output name=tag::${GITHUB_REF#refs/tags/}
-          echo ::set-output name=repository::${GITHUB_REPOSITORY,,}
+          echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          echo "repository=${GITHUB_REPOSITORY,,}" >> $GITHUB_OUTPUT
 
       - name: Log in to GitHub Container registry
         if: github.event_name != 'pull_request'
@@ -43,8 +43,8 @@ jobs:
           file: ./Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ghcr.io/${{ github.repository }}:${{ steps.env.outputs.tag }}
-            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ steps.env.outputs.repository }}:${{ steps.env.outputs.tag }}
+            ghcr.io/${{ steps.env.outputs.repository }}:latest
             docker.io/${{ steps.env.outputs.repository }}:${{ steps.env.outputs.tag }}
             docker.io/${{ steps.env.outputs.repository }}:latest
           build-args: STATIC_BASH_VERSION=${{ steps.static-bash.outputs.release }}
@@ -56,8 +56,8 @@ jobs:
           file: ./Dockerfile.rootless
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ghcr.io/${{ github.repository }}:${{ steps.env.outputs.tag }}-rootless
-            ghcr.io/${{ github.repository }}:latest-rootless
+            ghcr.io/${{ steps.env.outputs.repository }}:${{ steps.env.outputs.tag }}-rootless
+            ghcr.io/${{ steps.env.outputs.repository }}:latest-rootless
             docker.io/${{ steps.env.outputs.repository }}:${{ steps.env.outputs.tag }}-rootless
             docker.io/${{ steps.env.outputs.repository }}:latest-rootless
           build-args: |
@@ -73,17 +73,17 @@ jobs:
 
             Container images:
 
-            ${{ github.repository }}:**${{ steps.env.outputs.tag }}**
+            ${{ steps.env.outputs.repository }}:**${{ steps.env.outputs.tag }}**
 
-            * `docker pull ghcr.io/${{ github.repository }}:${{ steps.env.outputs.tag }}`
+            * `docker pull ghcr.io/${{ steps.env.outputs.repository }}:${{ steps.env.outputs.tag }}`
             * `docker pull docker.io/${{ steps.env.outputs.repository }}:${{ steps.env.outputs.tag }}`
 
-            ${{ github.repository }}:**${{ steps.env.outputs.tag }}-rootless**
+            ${{ steps.env.outputs.repository }}:**${{ steps.env.outputs.tag }}-rootless**
 
-            * `docker pull ghcr.io/${{ github.repository }}:${{ steps.env.outputs.tag }}-rootless`
+            * `docker pull ghcr.io/${{ steps.env.outputs.repository }}:${{ steps.env.outputs.tag }}-rootless`
             * `docker pull docker.io/${{ steps.env.outputs.repository }}:${{ steps.env.outputs.tag }}-rootless`
 
-            > [Changelog](https://github.com/WoozyMasta/archimate-ci-image/blob/master/CHANGELOG.md)
+            > [Changelog](https://github.com/${{ github.repository }}/blob/master/CHANGELOG.md)
 
           draft: false
           prerelease: false
