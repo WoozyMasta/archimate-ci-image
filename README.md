@@ -193,7 +193,7 @@ Add a configuration like this to your `./.gitlab-ci.yml` file:
 pages:
   stage: build
   image:
-    name: woozymasta/archimate-ci-image:5.0.2-1.0.4
+    name: ghcr.io/woozymasta/archimate-ci-image:5.0.2-1.0.4
     entrypoint: [""]
 
   script:

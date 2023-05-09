@@ -202,6 +202,7 @@ if [ "${GITHUB_ACTIONS:-}" == true ]; then
   ! git config --get user.email >/dev/null &&
     git config --global user.email \
       "${GITHUB_ACTOR:-nobody}@users.noreply.${GITHUB_SERVER_URL//*\/\/}"
+    git config --global --add safe.directory "$ARCHI_REPORT_PATH"
 
   # Create report
   archi_run
@@ -209,11 +210,11 @@ if [ "${GITHUB_ACTIONS:-}" == true ]; then
   [ "${ARCHI_HTML_REPORT_ENABLED,,}" == true ] && update_html
 
   # Commit and push subtree
-  git add --force $GIT_SUBTREE_PREFIX
+  git add --force "$GIT_SUBTREE_PREFIX"
   git commit --message "Archimate report ${GITHUB_ACTION:-0}:${GITHUB_JOB:-0}"
 
   _subtree="$(
-    git subtree split --squash --prefix $GIT_SUBTREE_PREFIX "$GITHUB_REF_NAME"
+    git subtree split --squash --prefix "$GIT_SUBTREE_PREFIX" "$GITHUB_REF_NAME"
   )"
   git push origin "$_subtree:$GITHUB_PAGES_BRANCH" --force
 
@@ -307,7 +308,6 @@ else
     "Plese set http or ssh url to git repositorty in \$GIT_REPOSITORY" \
     "variable or mount model to \$ARCHI_PROJECT_PATH ($ARCHI_PROJECT_PATH)" \
     'directory.'
-  exit 1
 fi
 
 
