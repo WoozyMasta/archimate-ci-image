@@ -203,6 +203,7 @@ if [ "${GITHUB_ACTIONS:-}" == true ]; then
     git config --global user.email \
       "${GITHUB_ACTOR:-nobody}@users.noreply.${GITHUB_SERVER_URL//*\/\/}"
     git config --global --add safe.directory "$ARCHI_REPORT_PATH"
+    git config --global --add safe.directory "$ARCHI_PROJECT_PATH"
 
   # Create report
   archi_run
