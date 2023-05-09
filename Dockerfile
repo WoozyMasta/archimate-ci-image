@@ -1,19 +1,15 @@
-FROM docker.io/ubuntu:20.04
-
-ARG ARCHI_VERSION=4.9.2
-ARG COARCHI_VERSION=0.8.2.202202161341
-ARG TZ=UTC
+FROM docker.io/ubuntu:22.04 AS base
 
 WORKDIR /archi
 
-SHELL ["/bin/bash", "-o", "pipefail", "-x", "-e", "-u", "-c"]
+ARG TZ=UTC
 
 # DL3015 ignored for suppress org.freedesktop.DBus.Error.ServiceUnknown
 # hadolint ignore=DL3008,DL3015
-RUN ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && \
-    echo "$TZ" > /etc/timezone && \
-    # Install dependecies \
-    apt-get update && \
+RUN set -eux; \
+    ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime; \
+    echo "$TZ" > /etc/timezone; \
+    apt-get update; \
     apt-get install -y \
       ca-certificates \
       libgtk2.0-cil \
@@ -23,24 +19,34 @@ RUN ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && \
       curl \
       git \
       openssh-client \
-      unzip && \
-    apt-get clean && \
-    update-ca-certificates && \
-    rm -rf /var/lib/apt/lists/* && \
-    # Download & extract Archimate tool \
-    curl 'https://www.archimatetool.com/downloads/archi/' --request POST \
-      --data-raw "zoob=$ARCHI_VERSION/Archi-Linux64-$ARCHI_VERSION.tgz" \
-      --output - | \
-      tar zxf - -C /opt/ 2> /dev/null && \
-    chmod +x /opt/Archi/Archi && \
-    # Install Collaboration plugin \
-    mkdir -p /root/.archi4/dropins /archi/report /archi/project && \
-    curl 'https://www.archimatetool.com/downloads/coarchi/' --request POST \
-       --data-raw "zoob=coArchi_$COARCHI_VERSION.archiplugin" \
-       --output modelrepository.archiplugin && \
-    unzip modelrepository.archiplugin -d /root/.archi4/dropins/ && \
-    rm modelrepository.archiplugin
+      unzip; \
+    apt-get clean; \
+    update-ca-certificates; \
+    rm -rf /var/lib/apt/lists/*
+
+FROM base AS archi
+ARG ARCHI_VERSION=5.0.2
+
+# Download & extract Archimate tool
+RUN set -eux; \
+    curl -#Lo archi.tgz \
+      "https://www.archimatetool.com/downloads/archi.php?/$ARCHI_VERSION/Archi-Linux64-$ARCHI_VERSION.tgz"; \
+    tar zxf archi.tgz -C /opt/; \
+    rm archi.tgz; \
+    chmod +x /opt/Archi/Archi; \
+    mkdir -p /root/.archi/dropins /archi/report /archi/project
+
+FROM archi AS coarchi
+ARG COARCHI_VERSION=0.8.7
+
+# Download & extract Archimate coArchi plugin
+RUN set -eux; \
+    curl -#Lo coarchi.zip --request POST \
+      "https://www.archimatetool.com/downloads/coarchi/coArchi_$COARCHI_VERSION.archiplugin"; \
+    unzip coarchi.zip -d /root/.archi/dropins/ && \
+    rm coarchi.zip
+
+FROM coarchi
 
 COPY entrypoint.sh /opt/Archi/
-
 ENTRYPOINT [ "/opt/Archi/entrypoint.sh" ]

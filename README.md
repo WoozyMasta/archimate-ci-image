@@ -43,9 +43,8 @@ for cloning.
 
 You can pull image from registries:
 
-* `ghcr.io/woozymasta/archimate-ci:4.9.2-1.0.3`
-* `quay.io/woozymasta/archimate-ci:4.9.2-1.0.3`
-* `docker.io/woozymasta/archimate-ci:4.9.2-1.0.3`
+* `ghcr.io/woozymasta/archimate-ci:5.0.2-1.0.4`
+* `docker.io/woozymasta/archimate-ci:5.0.2-1.0.4`
 
 ## Run Container
 
@@ -62,7 +61,7 @@ docker run --rm -ti \
   -e ARCHI_JASPER_REPORT_ENABLED=false \
   -e ARCHI_CSV_REPORT_ENABLED=true \
   -e ARCHI_EXPORT_MODEL_ENABLED=true \
-  ghcr.io/woozymasta/archimate-ci:4.9.2-1.0.3
+  ghcr.io/woozymasta/archimate-ci:5.0.2-1.0.4
 ```
 
 An example with handling a local repository:
@@ -75,13 +74,13 @@ chmod o+rw ./report
 docker run --rm -ti \
   -v $(pwd):/archi/project \
   -v $(pwd)/report:/archi/report \
-  ghcr.io/woozymasta/archimate-ci:4.9.2-1.0.3
+  ghcr.io/woozymasta/archimate-ci:5.0.2-1.0.4
 ```
 
 Working with the CLI directly:
 
 ```bash
-docker run --rm -ti ghcr.io/woozymasta/archimate-ci:4.9.2-1.0.3 --help
+docker run --rm -ti ghcr.io/woozymasta/archimate-ci:5.0.2-1.0.4 --help
 ```
 
 ## Configuration
@@ -163,7 +162,7 @@ jobs:
 
       - name: Deploy Archi report
         id: archi
-        uses: WoozyMasta/archimate-ci-image@4.9.2-1.0.3
+        uses: WoozyMasta/archimate-ci-image@5.0.2-1.0.4
         with:
           archiHtmlReportEnabled: true
           archiJasperReportEnabled: true
@@ -187,7 +186,7 @@ Add a configuration like this to your `./.gitlab-ci.yml` file:
 pages:
   stage: build
   image:
-    name: woozymasta/archimate-ci-image:4.9.2-1.0.3
+    name: woozymasta/archimate-ci-image:5.0.2-1.0.4
     entrypoint: [""]
 
   script:
@@ -218,20 +217,24 @@ and all report paths are automatically set to `$CI_PROJECT_DIR/public`
 ## Build Container
 
 ```bash
+ARCHI_VERSION=5.0.2
+COARCHI_VERSION=0.8.7
+
 docker build \
-  --tag archimate-ci:4.9.2 \
-  --build-arg="ARCHI_VERSION=4.9.2-1.0.3" \
-  --build-arg="COARCHI_VERSION=0.8.2.202202161341" \
+  --tag "archimate-ci:$ARCHI_VERSION-dev" \
+  --build-arg="ARCHI_VERSION=$ARCHI_VERSION" \
+  --build-arg="COARCHI_VERSION=$COARCHI_VERSION" \
+  ./
+
+docker build \
+  --file Dockerfile.rootless \
+  --tag "archimate-ci:$ARCHI_VERSION-dev-rootless" \
+  --build-arg="ARCHIMATE_CI_IMAGE=archimate-ci" \
+  --build-arg="ARCHIMATE_CI_VERSION=$ARCHI_VERSION-dev" \
   ./
 ```
 
 ## Solving Potential Problems
-
-If you are trying to build an image using podman or buildah and get a warning
-**"SHELL is not supported for OCI image format"**, use the `--format docker`
-flag
-
----
 
 If you use podman, unshare mounted volumes to user with id 1000.
 
@@ -243,7 +246,7 @@ podman run --rm -ti \
   -v $(pwd)/report:/archi/report \
   -e GIT_REPOSITORY=https://github.com/WoozyMasta/archimate-ci-image-example.git \
   -e ARCHI_JASPER_REPORT_ENABLED=false \
-  ghcr.io/woozymasta/archimate-ci:4.9.2-1.0.3
+  ghcr.io/woozymasta/archimate-ci:5.0.2-1.0.4
 ```
 
 ---
@@ -258,7 +261,7 @@ docker run --rm -ti \
   -e GIT_REPOSITORY=https://github.com/WoozyMasta/archimate-ci-image-example.git
   --network=host
   --add-host="$(getent hosts gitlab.internal.tld | awk '{print $2 ":" $1}')"
-  ghcr.io/woozymasta/archimate-ci:4.9.2-1.0.3
+  ghcr.io/woozymasta/archimate-ci:5.0.2-1.0.4
 ```
 
 <!-- links -->

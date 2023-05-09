@@ -6,6 +6,15 @@ itself. For example `4.9.1-1.0.1`
 
 ## [Unreleased]
 
+## [5.0.2-1.0.4] - 2023-05-09
+
+### Changed <!-- markdownlint-disable no-duplicate-header -->
+
+* Update Archi version to `5.0.2`
+* Update coArchi version to `0.8.7`
+* Fix [#7](https://github.com/WoozyMasta/archimate-ci-image/issues/7)
+  model name selection changed to use only the first occurrence
+
 ## [4.9.2-1.0.3] - 2022-02-17
 
 ### Changed <!-- markdownlint-disable no-duplicate-header -->
