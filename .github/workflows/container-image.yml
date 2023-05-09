@@ -19,7 +19,7 @@ jobs:
         id: env
         run: |
           echo ::set-output name=tag::${GITHUB_REF#refs/tags/}
-          echo ::set-output name=repository::${GITHUB_REPOSITORY/-}
+          echo ::set-output name=repository::${GITHUB_REPOSITORY,,}
 
       - name: Log in to GitHub Container registry
         if: github.event_name != 'pull_request'
