@@ -19,6 +19,10 @@ itself. For example `4.9.1-1.0.1`
 
 * `DEBUG` env
 
+### Deleted
+
+* Image hosting in the quay.io registry
+
 ## [4.9.2-1.0.3] - 2022-02-17
 
 ### Changed <!-- markdownlint-disable no-duplicate-header -->
