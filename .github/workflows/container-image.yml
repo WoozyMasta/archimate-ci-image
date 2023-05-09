@@ -20,15 +20,6 @@ jobs:
         shell: bash
         run: |
           echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-          echo "repository=$(echo "$GITHUB_REPOSITORY" | tr '[:upper:]' '[:lower:]' )" >> $GITHUB_OUTPUT
-
-      - name: debug env
-        id: debug
-        shell: bash
-        run: |
-          echo ${{ steps.env.outputs.repository }}:${{ steps.env.outputs.tag }}
-          echo "$GITHUB_REPOSITORY" | tr '[:upper:]' '[:lower:]'
-          echo $GITHUB_REPOSITORY
 
       - name: Log in to GitHub Container registry
         if: github.event_name != 'pull_request'
@@ -52,10 +43,10 @@ jobs:
           file: ./Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ghcr.io/${{ steps.env.outputs.repository }}:${{ steps.env.outputs.tag }}
-            ghcr.io/${{ steps.env.outputs.repository }}:latest
-            docker.io/${{ steps.env.outputs.repository }}:${{ steps.env.outputs.tag }}
-            docker.io/${{ steps.env.outputs.repository }}:latest
+            ghcr.io/woozymasta/archimate-ci-image:${{ steps.env.outputs.tag }}
+            ghcr.io/woozymasta/archimate-ci-image:latest
+            docker.io/woozymasta/archimate-ci-image:${{ steps.env.outputs.tag }}
+            docker.io/woozymasta/archimate-ci-image:latest
           build-args: STATIC_BASH_VERSION=${{ steps.static-bash.outputs.release }}
 
       - name: Build and push rootless container image
@@ -65,10 +56,10 @@ jobs:
           file: ./Dockerfile.rootless
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ghcr.io/${{ steps.env.outputs.repository }}:${{ steps.env.outputs.tag }}-rootless
-            ghcr.io/${{ steps.env.outputs.repository }}:latest-rootless
-            docker.io/${{ steps.env.outputs.repository }}:${{ steps.env.outputs.tag }}-rootless
-            docker.io/${{ steps.env.outputs.repository }}:latest-rootless
+            ghcr.io/woozymasta/archimate-ci-image:${{ steps.env.outputs.tag }}-rootless
+            ghcr.io/woozymasta/archimate-ci-image:latest-rootless
+            docker.io/woozymasta/archimate-ci-image:${{ steps.env.outputs.tag }}-rootless
+            docker.io/woozymasta/archimate-ci-image:latest-rootless
           build-args: |
             ARCHIMATE_CI_VERSION=${{ steps.env.outputs.tag }}
 
@@ -82,15 +73,15 @@ jobs:
 
             Container images:
 
-            ${{ steps.env.outputs.repository }}:**${{ steps.env.outputs.tag }}**
+            woozymasta/archimate-ci-image:**${{ steps.env.outputs.tag }}**
 
-            * `docker pull ghcr.io/${{ steps.env.outputs.repository }}:${{ steps.env.outputs.tag }}`
-            * `docker pull docker.io/${{ steps.env.outputs.repository }}:${{ steps.env.outputs.tag }}`
+            * `docker pull ghcr.io/woozymasta/archimate-ci-image:${{ steps.env.outputs.tag }}`
+            * `docker pull docker.io/woozymasta/archimate-ci-image:${{ steps.env.outputs.tag }}`
 
-            ${{ steps.env.outputs.repository }}:**${{ steps.env.outputs.tag }}-rootless**
+            woozymasta/archimate-ci-image:**${{ steps.env.outputs.tag }}-rootless**
 
-            * `docker pull ghcr.io/${{ steps.env.outputs.repository }}:${{ steps.env.outputs.tag }}-rootless`
-            * `docker pull docker.io/${{ steps.env.outputs.repository }}:${{ steps.env.outputs.tag }}-rootless`
+            * `docker pull ghcr.io/woozymasta/archimate-ci-image:${{ steps.env.outputs.tag }}-rootless`
+            * `docker pull docker.io/woozymasta/archimate-ci-image:${{ steps.env.outputs.tag }}-rootless`
 
             > [Changelog](https://github.com/${{ github.repository }}/blob/master/CHANGELOG.md)
 
