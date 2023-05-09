@@ -46,6 +46,11 @@ You can pull image from registries:
 * `ghcr.io/woozymasta/archimate-ci:5.0.2-1.0.4`
 * `docker.io/woozymasta/archimate-ci:5.0.2-1.0.4`
 
+And rootless image:
+
+* `ghcr.io/woozymasta/archimate-ci:5.0.2-1.0.4-rootless`
+* `docker.io/woozymasta/archimate-ci:5.0.2-1.0.4-rootless`
+
 ## Run Container
 
 Example with cloning a remote repository and render HTML report:
