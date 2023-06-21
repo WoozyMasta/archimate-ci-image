@@ -32,7 +32,7 @@ DISPLAY=:1
 export GIT_SSH_COMMAND GIT_TERMINAL_PROMPT DISPLAY
 
 # Regex
-_re_url='([\w.@\:/~\-]+)(\.git)(\/)?'
+_re_url='([\w.@\:/~\-]+)(\.git)?(\/)?'
 _re_proto_http='(http(s)?(:(\/){0,3}))?'
 _re_proto_ssh='((((git|user)@[\w.-]+)|(git|ssh))(:(\/){0,3}))'
 
