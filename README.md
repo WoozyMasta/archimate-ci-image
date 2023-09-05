@@ -66,6 +66,7 @@ docker run --rm -ti \
   -e ARCHI_JASPER_REPORT_ENABLED=false \
   -e ARCHI_CSV_REPORT_ENABLED=true \
   -e ARCHI_EXPORT_MODEL_ENABLED=true \
+  -e SCREEN_DPI=192 \
   ghcr.io/woozymasta/archimate-ci-image:5.0.2-1.0.4
 ```
 
@@ -121,6 +122,8 @@ Options for managing model export:
   format.
 * **`ARCHI_EXPORT_MODEL_PATH`**=`$ARCHI_REPORT_PATH` - Path for save model;
 * **`ARCHI_APP`**=`com.archimatetool.commandline.app` application name.
+* **`SCREEN_DPI`**=`96` - DPI of the generated images, change to 192 for 200%
+  scaling;
 * **`DEBUG`**=`false` - enable `bash -x`
 
 ### GitHub Actions Configuration
@@ -149,6 +152,7 @@ All inputs equivalent to environment variables:
 * `githubPagesDomain`
 * `githubPagesBranch`
 * `gitSubtreePrefix`
+* `screenDpi`
 * `debugAction`
 
 ## GitHub Actions Example
@@ -177,6 +181,7 @@ jobs:
           archiCsvReportEnabled: false
           archiExportModelEnabled: true
           githubToken: ${{ secrets.GITHUB_TOKEN }}
+          screenDpi: 192
 ```
 
 In the repository settings, set the branch for publishing pages that you

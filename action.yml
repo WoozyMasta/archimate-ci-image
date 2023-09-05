@@ -19,6 +19,7 @@ runs:
     GITHUB_PAGES_DOMAIN: ${{ inputs.githubPagesDomain }}
     GITHUB_PAGES_BRANCH: ${{ inputs.githubPagesBranch }}
     GIT_SUBTREE_PREFIX: ${{ inputs.gitSubtreePrefix }}
+    SCREEN_DPI: ${{ inputs.screenDpi }}
     DEBUG: ${{ inputs.debugAction }}
 
 inputs:
@@ -56,6 +57,9 @@ inputs:
     required: false
   gitSubtreePrefix:
     description: Directory for store reports in model branch
+    required: false
+  screenDpi:
+    description: DPI of the generated images
     required: false
   debugAction:
     description: bash -x

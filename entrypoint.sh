@@ -15,6 +15,7 @@ set -euo pipefail
 : "${ARCHI_CSV_REPORT_ENABLED:=false}"
 : "${ARCHI_EXPORT_MODEL_ENABLED:=true}"
 : "${ARCHI_APP:=com.archimatetool.commandline.app}"
+: "${SCREEN_DPI:=96}"
 
 : "${GITHUB_SERVER_URL:=https://github.com}"
 : "${GITHUB_PAGES_BRANCH:=gh-pages}"
@@ -79,7 +80,7 @@ archi_run() {
     )
 
   # Run Archi
-  xvfb-run \
+  xvfb-run --server-args="-dpi $SCREEN_DPI" \
     /opt/Archi/Archi -application "$ARCHI_APP" -consoleLog -nosplash \
       --modelrepository.loadModel "$ARCHI_PROJECT_PATH" "${_args[@]}" &&
   printf '\n%s\n\n' "Done. Reports saved to $ARCHI_REPORT_PATH"
@@ -147,7 +148,7 @@ fail() { printf >&2 '%s\n' "$*"; exit 1; }
 # Run custom archi command
 if [ "$#" -ge 1 ]; then
   echo "Execute Archi with _args: $*"
-  xvfb-run \
+  xvfb-run --server-args="-dpi $SCREEN_DPI" \
     /opt/Archi/Archi -application "$ARCHI_APP" -consoleLog -nosplash "$@"
   exit 0
 fi
