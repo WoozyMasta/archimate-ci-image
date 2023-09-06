@@ -88,6 +88,23 @@ Working with the CLI directly:
 docker run --rm -ti ghcr.io/woozymasta/archimate-ci-image:5.0.2-1.0.4 --help
 ```
 
+Example on how to write preferences:
+
+```bash
+mkdir -p ./settings
+
+# Change the setting to increase the resolution of the images in the HTML report.
+
+cat << EOF > ./settings/com.archimatetool.editor.prefs
+eclipse.preferences.version=1
+scaleImageExport=true
+EOF
+
+docker run --rm -ti \
+  -v $(pwd)/settings:/root/.archi/.metadata/.plugins/org.eclipse.core.runtime/.settings \
+  ...
+```
+
 ## Configuration
 
 Configuration for connecting to the git repository:
