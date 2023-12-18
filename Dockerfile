@@ -12,6 +12,7 @@ RUN set -eux; \
     apt-get update; \
     apt-get install -y \
       ca-certificates \
+      language-pack-en-base \
       libgtk2.0-cil \
       libswt-gtk-4-jni \
       dbus-x11 \
@@ -24,13 +25,15 @@ RUN set -eux; \
     update-ca-certificates; \
     rm -rf /var/lib/apt/lists/*
 
+ENV LANG=en_US.UTF-8
+
 FROM base AS archi
 ARG ARCHI_VERSION=5.0.2
 
 # Download & extract Archimate tool
 RUN set -eux; \
     curl -#Lo archi.tgz \
-      "https://www.archimatetool.com/downloads/archi.php?/$ARCHI_VERSION/Archi-Linux64-$ARCHI_VERSION.tgz"; \
+      "https://www.archimatetool.com/downloads/archi-5.php?/$ARCHI_VERSION/Archi-Linux64-$ARCHI_VERSION.tgz"; \
     tar zxf archi.tgz -C /opt/; \
     rm archi.tgz; \
     chmod +x /opt/Archi/Archi; \
