@@ -25,6 +25,8 @@ RUN set -eux; \
     update-ca-certificates; \
     rm -rf /var/lib/apt/lists/*
 
+ENV LANG=en_US.UTF-8
+
 FROM base AS archi
 ARG ARCHI_VERSION=5.0.2
 
