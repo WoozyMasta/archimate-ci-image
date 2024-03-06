@@ -37,7 +37,7 @@ RUN set -eux; \
     mkdir -p /root/.archi/dropins /archi/report /archi/project
 
 FROM archi AS coarchi
-ARG COARCHI_VERSION=0.8.7
+ARG COARCHI_VERSION=0.9.2
 
 # Download & extract Archimate coArchi plugin
 RUN set -eux; \
