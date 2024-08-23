@@ -195,29 +195,10 @@ if [ "${GITHUB_ACTIONS:-}" == true ]; then
   # Disable Jekyll
   touch "$ARCHI_REPORT_PATH/.nojekyll"
 
-  # Change git repo settings
-  # git remote set-url origin "$_gh_repo"
-  ! git config --get user.name >/dev/null &&
-    git config --global user.name "${GITHUB_ACTOR:-nobody}"
-  ! git config --get user.email >/dev/null &&
-    git config --global user.email \
-      "${GITHUB_ACTOR:-nobody}@users.noreply.${GITHUB_SERVER_URL//*\/\/}"
-    git config --global --add safe.directory "$ARCHI_REPORT_PATH"
-    git config --global --add safe.directory "$ARCHI_PROJECT_PATH"
-
   # Create report
   archi_run
 
   [ "${ARCHI_HTML_REPORT_ENABLED,,}" == true ] && update_html
-
-  # Commit and push subtree
-  git add --force "$GIT_SUBTREE_PREFIX"
-  git commit --message "Archimate report ${GITHUB_ACTION:-0}:${GITHUB_JOB:-0}"
-
-  _subtree="$(
-    git subtree split --prefix "$GIT_SUBTREE_PREFIX" "$GITHUB_REF_NAME"
-  )"
-  git push origin "$_subtree:$GITHUB_PAGES_BRANCH" --force
 
   exit 0
 
