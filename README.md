@@ -43,13 +43,13 @@ for cloning.
 
 You can pull image from registries:
 
-* `ghcr.io/woozymasta/archimate-ci-image:5.0.2-1.0.4`
-* `docker.io/woozymasta/archimate-ci-image:5.0.2-1.0.4`
+* `ghcr.io/nilsivanson/archimate-ci-image:5.0.2-1.0.4`
+* `docker.io/nilsivanson/archimate-ci-image:5.0.2-1.0.4`
 
 And rootless image:
 
-* `ghcr.io/woozymasta/archimate-ci-image:5.0.2-1.0.4-rootless`
-* `docker.io/woozymasta/archimate-ci-image:5.0.2-1.0.4-rootless`
+* `ghcr.io/nilsivanson/archimate-ci-image:5.0.2-1.0.4-rootless`
+* `docker.io/nilsivanson/archimate-ci-image:5.0.2-1.0.4-rootless`
 
 ## Run Container
 
@@ -66,7 +66,7 @@ docker run --rm -ti \
   -e ARCHI_JASPER_REPORT_ENABLED=false \
   -e ARCHI_CSV_REPORT_ENABLED=true \
   -e ARCHI_EXPORT_MODEL_ENABLED=true \
-  ghcr.io/woozymasta/archimate-ci-image:5.0.2-1.0.4
+  ghcr.io/nilsivanson/archimate-ci-image:5.0.2-1.0.4
 ```
 
 An example with handling a local repository:
@@ -79,13 +79,13 @@ chmod o+rw ./report
 docker run --rm -ti \
   -v $(pwd):/archi/project \
   -v $(pwd)/report:/archi/report \
-  ghcr.io/woozymasta/archimate-ci-image:5.0.2-1.0.4
+  ghcr.io/nilsivanson/archimate-ci-image:5.0.2-1.0.4
 ```
 
 Working with the CLI directly:
 
 ```bash
-docker run --rm -ti ghcr.io/woozymasta/archimate-ci-image:5.0.2-1.0.4 --help
+docker run --rm -ti ghcr.io/nilsivanson/archimate-ci-image:5.0.2-1.0.4 --help
 ```
 
 Example on how to write preferences:
@@ -210,7 +210,7 @@ Add a configuration like this to your `./.gitlab-ci.yml` file:
 pages:
   stage: build
   image:
-    name: ghcr.io/woozymasta/archimate-ci-image:5.0.2-1.0.4
+    name: ghcr.io/nilsivanson/archimate-ci-image:5.0.2-1.0.4
     entrypoint: [""]
 
   script:
@@ -270,7 +270,7 @@ podman run --rm -ti \
   -v $(pwd)/report:/archi/report \
   -e GIT_REPOSITORY=https://github.com/WoozyMasta/archimate-ci-image-example.git \
   -e ARCHI_JASPER_REPORT_ENABLED=false \
-  ghcr.io/woozymasta/archimate-ci-image:5.0.2-1.0.4
+  ghcr.io/nilsivanson/archimate-ci-image:5.0.2-1.0.4
 ```
 
 ---
@@ -285,7 +285,7 @@ docker run --rm -ti \
   -e GIT_REPOSITORY=https://github.com/WoozyMasta/archimate-ci-image-example.git
   --network=host
   --add-host="$(getent hosts gitlab.internal.tld | awk '{print $2 ":" $1}')"
-  ghcr.io/woozymasta/archimate-ci-image:5.0.2-1.0.4
+  ghcr.io/nilsivanson/archimate-ci-image:5.0.2-1.0.4
 ```
 
 <!-- links -->

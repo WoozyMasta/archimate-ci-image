@@ -43,10 +43,10 @@ jobs:
           file: ./Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ghcr.io/woozymasta/archimate-ci-image:${{ steps.env.outputs.tag }}
-            ghcr.io/woozymasta/archimate-ci-image:latest
-            docker.io/woozymasta/archimate-ci-image:${{ steps.env.outputs.tag }}
-            docker.io/woozymasta/archimate-ci-image:latest
+            ghcr.io/nilsivanson/archimate-ci-image:${{ steps.env.outputs.tag }}
+            ghcr.io/nilsivanson/archimate-ci-image:latest
+            docker.io/nilsivanson/archimate-ci-image:${{ steps.env.outputs.tag }}
+            docker.io/nilsivanson/archimate-ci-image:latest
 
       - name: Build and push rootless container image
         uses: docker/build-push-action@v4
@@ -55,10 +55,10 @@ jobs:
           file: ./Dockerfile.rootless
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ghcr.io/woozymasta/archimate-ci-image:${{ steps.env.outputs.tag }}-rootless
-            ghcr.io/woozymasta/archimate-ci-image:latest-rootless
-            docker.io/woozymasta/archimate-ci-image:${{ steps.env.outputs.tag }}-rootless
-            docker.io/woozymasta/archimate-ci-image:latest-rootless
+            ghcr.io/nilsivanson/archimate-ci-image:${{ steps.env.outputs.tag }}-rootless
+            ghcr.io/nilsivanson/archimate-ci-image:latest-rootless
+            docker.io/nilsivanson/archimate-ci-image:${{ steps.env.outputs.tag }}-rootless
+            docker.io/nilsivanson/archimate-ci-image:latest-rootless
           build-args: |
             ARCHIMATE_CI_VERSION=${{ steps.env.outputs.tag }}
 
@@ -72,15 +72,15 @@ jobs:
 
             Container images:
 
-            woozymasta/archimate-ci-image:**${{ steps.env.outputs.tag }}**
+            nilsivanson/archimate-ci-image:**${{ steps.env.outputs.tag }}**
 
-            * `docker pull ghcr.io/woozymasta/archimate-ci-image:${{ steps.env.outputs.tag }}`
-            * `docker pull docker.io/woozymasta/archimate-ci-image:${{ steps.env.outputs.tag }}`
+            * `docker pull ghcr.io/nilsivanson/archimate-ci-image:${{ steps.env.outputs.tag }}`
+            * `docker pull docker.io/nilsivanson/archimate-ci-image:${{ steps.env.outputs.tag }}`
 
-            woozymasta/archimate-ci-image:**${{ steps.env.outputs.tag }}-rootless**
+            nilsivanson/archimate-ci-image:**${{ steps.env.outputs.tag }}-rootless**
 
-            * `docker pull ghcr.io/woozymasta/archimate-ci-image:${{ steps.env.outputs.tag }}-rootless`
-            * `docker pull docker.io/woozymasta/archimate-ci-image:${{ steps.env.outputs.tag }}-rootless`
+            * `docker pull ghcr.io/nilsivanson/archimate-ci-image:${{ steps.env.outputs.tag }}-rootless`
+            * `docker pull docker.io/nilsivanson/archimate-ci-image:${{ steps.env.outputs.tag }}-rootless`
 
             > [Changelog](https://github.com/${{ github.repository }}/blob/master/CHANGELOG.md)
 
